@@ -1,0 +1,6 @@
+*.class
+a.out
+*.exe
+*.pyc
+.class
+.project
