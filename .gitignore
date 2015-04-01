@@ -3,4 +3,4 @@ a.out
 *.exe
 *.pyc
 .class
-.project
+/bin
