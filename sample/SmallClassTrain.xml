@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<TrainData>
+  <weibo id="1" emotion-type1="none" emotion-type2="none">
+    <sentence id="1" opinionated="N">回复@王羊羊的微博:是，要的就是安静的生存环境，而且，到北京五环25分钟车程，938离我住处只有300米，饮食一条街更是北京饮食街的翻版，应有尽有。</sentence>
+    <sentence id="2" opinionated="N">//@王羊羊的微博:廊坊是个好地方，紧邻京津，有点闹中取静的意思。</sentence>
+  </weibo>
+  <weibo id="2" emotion-type1="none" emotion-type2="none">
+    <sentence id="1" opinionated="N">录入。</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="like" emotion-2-type="none">//@广州Les_go:我捻依出戏真系好多les噶最爱咯。</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="like" emotion-2-type="none">好写实同时都好向往。</sentence>
+    <sentence id="4" opinionated="N">难得一部反映les噶情感同面临噶困难噶一出粤语电影。</sentence>
+  </weibo>
+  <weibo id="3" emotion-type1="none" emotion-type2="none">
+    <sentence id="1" opinionated="N">QQ培训班群早盘操作提示:由于上周再收十字星,市场是下跌中继还是初步见底？</sentence>
+    <sentence id="2" opinionated="N">本周将会有一结果。</sentence>
+    <sentence id="3" opinionated="N">目前股指下破20 30周线的支撑已三周,5周线本周将与20 30周线形成死叉，显示中期调整仍在进行之中,市场重心下移的趋势难以改变,</sentence>
+  </weibo>
+  <weibo id="4" emotion-type1="disgust" emotion-type2="none">
+    <sentence id="1" opinionated="N">今儿老爸逮着我一顿狠念！</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none">念得我各种烦躁……</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none">我要不要考虑下降低回家的频率啊 回来一次吵一次= =真烦人！！！</sentence>
+  </weibo>
+  <weibo id="5" emotion-type1="none" emotion-type2="none">
+    <sentence id="1" opinionated="N">高智传媒董事长，???????????</sentence>
+    <sentence id="2" opinionated="N">杂志社何智光先生（右）从摄影器材的发展史谈起，数码全面取代胶片，速度之快远超出想像，关于纸媒和数字化媒体的争论就好比当初胶片和数码的争论。</sentence>
+    <sentence id="3" opinionated="N">从广告数据的投放看，杂志份额一直在缩小，传统媒体必须求变。</sentence>
+    <sentence id="4" opinionated="N">摄影之友目前已开始做针对ipad的App，目前已有37万订阅量。</sentence>
+  </weibo>
+  <weibo id="6" emotion-type1="disgust" emotion-type2="none">
+    <sentence id="1" opinionated="N">招聘:代写毕业论文 。</sentence>
+    <sentence id="2" opinionated="N">论文大纲已拟好。</sentence>
+    <sentence id="3" opinionated="N">参考资料齐全。</sentence>
+    <sentence id="4" opinionated="N">字数一万以上。</sentence>
+    <sentence id="5" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none">工资200 非诚勿扰 有意向请留言(妈的我是真的没空写这逼玩意儿了啊!)</sentence>
+  </weibo>
+  <weibo id="7" emotion-type1="disgust" emotion-type2="none">
+    <sentence id="1" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none">每天生活在欺骗中 又要言说别人的不忠 却也离不开 纠缠不清 不知为何 是利益呢还是利益呢还是利益呢 是假好人呢还是假好人呢还是假好人呢</sentence>
+  </weibo>
+  <weibo id="8" emotion-type1="happiness" emotion-type2="surprise">
+    <sentence id="1" opinionated="Y" emotion-1-type="surprise" emotion-2-type="anger">[抓狂]我竟然被那个考了车牌几个月但一直没有开过车的老妈笑话我笨！</sentence>
+    <sentence id="2" opinionated="N">说我玩得屎！</sentence>
+    <sentence id="3" opinionated="N">谁知她自己上场…</sentence>
+    <sentence id="4" opinionated="N">一局就拉倒！</sentence>
+    <sentence id="5" opinionated="Y" emotion-1-type="happiness" emotion-2-type="none">哈哈哈哈哈哈哈哈！</sentence>
+    <sentence id="6" opinionated="N">我好歹也玩了三局！</sentence>
+    <sentence id="7" opinionated="Y" emotion-1-type="happiness" emotion-2-type="none">[耶]哈哈哈！</sentence>
+    <sentence id="8" opinionated="N">你的车牌不愧是买回来的！</sentence>
+    <sentence id="9" opinionated="N">她最后还说…</sentence>
+    <sentence id="10" opinionated="Y" emotion-1-type="like" emotion-2-type="none">开真车比这个好玩多了！</sentence>
+    <sentence id="11" opinionated="Y" emotion-1-type="surprise" emotion-2-type="none">我擦！！！</sentence>
+  </weibo>
+  <weibo id="9" emotion-type1="happiness" emotion-type2="none">
+    <sentence id="1" opinionated="N">3号值班，4号5号休假，6号7号8号三天去任丘培训。。</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="happiness" emotion-2-type="none">三天满满当当的，除了晚上好像没事儿，谁在任丘啊，约我哇约我哇~~</sentence>
+  </weibo>
+  <weibo id="10" emotion-type1="disgust" emotion-type2="none">
+    <sentence id="1" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none">扬州一本地话节目，以前看看还可以，现在扫了眼，那个钟挂那过段时间响声替个公司做个广告，唉不晓得他们工作人员怎么想的，这么龊的插入广告方式，看扬州台的全老头老太，等过了些年等老人们仙去扬州台可以关门了阿，</sentence>
+  </weibo>
+  <weibo id="11" emotion-type1="like" emotion-type2="disgust">
+    <sentence id="1" opinionated="N">在考虑是否要回刷2.3Rom，黑/锁屏状态，屏幕微微亮;</sentence>
+    <sentence id="2" opinionated="N">发烫耗电快…</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none">这让我蛋疼！</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="like" emotion-2-type="none">不过，喜欢4.0原生态的界面！</sentence>
+  </weibo>
+  <weibo id="12" emotion-type1="like" emotion-type2="none">
+    <sentence id="1" opinionated="Y" emotion-1-type="like" emotion-2-type="none">尼玛！！！！</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="like" emotion-2-type="none">好好听！！！！！！！！！！！！</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="like" emotion-2-type="none">我禁不住的鼓鼓掌[鼓掌] [鼓掌] [鼓掌] [鼓掌] [鼓掌] [鼓掌] [鼓掌]</sentence>
+  </weibo>
+  <weibo id="13" emotion-type1="none" emotion-type2="none">
+    <sentence id="1" opinionated="N">这家饭店改版后第一次来：</sentence>
+    <sentence id="2" opinionated="N">一、环境比之前更宽松，更开放的感觉，点饭也更开放，增加套餐类增值强用户体验服务；</sentence>
+    <sentence id="3" opinionated="N">二、大间中隔小间隔而未隔，空间凸显更大，感觉舒适，并且配置更多液晶显示器提供电视节目；</sentence>
+    <sentence id="4" opinionated="N">三、最倒灶的洗手间味道比之前好多了；</sentence>
+    <sentence id="5" opinionated="N">四、整个从屋顶设计到各个角落细节营造温暖舒适感觉尝试营</sentence>
+  </weibo>
+  <weibo id="14" emotion-type1="fear" emotion-type2="none">
+    <sentence id="1" opinionated="N">我遇到小偷了，新疆人，两个。</sentence>
+    <sentence id="2" opinionated="N">一个摸我左边的书包，我往左看时，另一个摸我右边的口袋！</sentence>
+    <sentence id="3" opinionated="N">真有组织，有纪律。</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="fear" emotion-2-type="none">大家要小心啊，在三里屯的天桥上。[委屈]</sentence>
+  </weibo>
+  <weibo id="15" emotion-type1="none" emotion-type2="none">
+    <sentence id="1" opinionated="N">轻轨上，《苦瓜》单曲循环。</sentence>
+    <sentence id="2" opinionated="N">半生瓜。</sentence>
+    <sentence id="3" opinionated="N">想起那年在察卡盐湖的日落，听了多少遍升哥的《二十年以前》。</sentence>
+    <sentence id="4" opinionated="N">这无物之阵。</sentence>
+    <sentence id="5" opinionated="N">你有狼牙棒，哥有天灵盖。</sentence>
+    <sentence id="6" opinionated="N">到站了，开会。</sentence>
+  </weibo>
+  <weibo id="16" emotion-type1="disgust" emotion-type2="none">
+    <sentence id="1" opinionated="N">正在等飞机。</sentence>
+    <sentence id="2" opinionated="N">短信通知误人。</sentence>
+    <sentence id="3" opinionated="N">登机囗临时变更，从T3这边的F1变到另一边的F1。</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none">中午吃多了，被国航一转场，全消食了。</sentence>
+    <sentence id="5" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none">介要是来得晚可咋办啊！</sentence>
+  </weibo>
+</TrainData>

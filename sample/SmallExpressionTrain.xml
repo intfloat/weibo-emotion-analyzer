@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<SampleData>
+  <weibo id="1" emotion-type1="disgust" emotion-type2="none">
+    <sentence id="1" opinionated="N" keyexpression1="null">今儿老爸逮着我一顿狠念！</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none" keyexpression1="各种烦躁">念得我各种烦躁……</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none" keyexpression1="真烦人">我要不要考虑下降低回家的频率啊 回来一次吵一次= =真烦人！！！</sentence>
+  </weibo>
+  <weibo id="2" emotion-type1="like" emotion-type2="disgust">
+    <sentence id="1" opinionated="N" keyexpression1="null">在考虑是否要回刷2.3Rom，黑/锁屏状态，屏幕微微亮;</sentence>
+    <sentence id="2" opinionated="N" keyexpression1="null">发烫耗电快…</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none" keyexpression1="蛋疼">这让我蛋疼！</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="like" emotion-2-type="none" keyexpression1="喜欢">不过，喜欢4.0原生态的界面！</sentence>
+  </weibo>
+  <weibo id="3" emotion-type1="happiness" emotion-type2="like">
+    <sentence id="1" opinionated="N" keyexpression1="null">去年的今天我去上了政治辅导班，回来看芒果台的跨年晚会，然后叠了纸飞机在上面许下了心愿。</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="like" emotion-2-type="none" keyexpression1="很怀念">又要重复我每年必说的台词了，2010就要过去了，我很怀念它。</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="like" emotion-2-type="none" keyexpression1="看上去很美">至少，它看上去很美。</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="happiness" emotion-2-type="like" keyexpression1="新年快乐">欢迎你，2011，新年快乐！</sentence>
+  </weibo>
+  <weibo id="4" emotion-type1="sadness" emotion-type2="none">
+    <sentence id="1" opinionated="N" keyexpression1="null">下午到台里，吴凤花和方亚芬正在换装。</sentence>
+    <sentence id="2" opinionated="N" keyexpression1="null">我刚过去打个招呼，就被德才老师说耽误他们录像。</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="sadness" emotion-2-type="none" keyexpression1="那个冤呢">我那个冤呢。</sentence>
+    <sentence id="4" opinionated="N" keyexpression1="null">我说我没采访。</sentence>
+    <sentence id="5" opinionated="N" keyexpression1="null">他说聊天也不行，耽误穿服装。</sentence>
+    <sentence id="6" opinionated="N" keyexpression1="null">方姐姐说腿好的话就来段对花枪了。</sentence>
+  </weibo>
+  <weibo id="5" emotion-type1="sadness" emotion-type2="none">
+    <sentence id="1" opinionated="Y" emotion-1-type="sadness" emotion-2-type="none" keyexpression1="好难过" keyexpression2="好痴累">好难过 为什么每天都回忆你 为什么每天都想起你 为什么每天都好痴累 早结束了 怎么还在爱</sentence>
+  </weibo>
+  <weibo id="6" emotion-type1="sadness" emotion-type2="none">
+    <sentence id="1" opinionated="Y" emotion-1-type="sadness" emotion-2-type="none" keyexpression1="疼啊">为什么我的房间那么干呢，嗓子疼啊~！</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="sadness" emotion-2-type="none" keyexpression1="腰酸背痛">今早起来更体现出了我昨天排练的成果，腰酸背痛！！！</sentence>
+    <sentence id="3" opinionated="N" keyexpression1="null">不过彭老师今早出门说的那句话我也赞同......</sentence>
+  </weibo>
+  <weibo id="7" emotion-type1="like" emotion-type2="none">
+    <sentence id="1" opinionated="Y" emotion-1-type="like" emotion-2-type="none" keyexpression1="很不错">这家位于槟城George Town，Tunes Hotel斜对面的饼家，家庭式作业，她的咸蛋酥，年糕椰蓉酥，叉烧酥都很不错。[good]</sentence>
+  </weibo>
+  <weibo id="8" emotion-type1="sadness" emotion-type2="happiness">
+    <sentence id="1" opinionated="Y" emotion-1-type="sadness" emotion-2-type="happiness" keyexpression1="值得开心和崩溃">今天是个值得开心和崩溃的日子～</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="sadness" emotion-2-type="none" keyexpression1="眼泪都出了">大腿再次拉伤，痛到我眼泪都出了…</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="sadness" emotion-2-type="none" keyexpression1="崩溃">回到宿舍连续拉肚子，崩溃…</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="happiness" emotion-2-type="none" keyexpression1="null">接下来继续红红的红歌赛～</sentence>
+  </weibo>
+  <weibo id="9" emotion-type1="surprise" emotion-type2="none">
+    <sentence id="1" opinionated="Y" emotion-1-type="surprise" emotion-2-type="none" keyexpression1="OMG">OMG，是我不关心八卦太久了吗？！</sentence>
+    <sentence id="2" opinionated="N" keyexpression1="null">白天还在跟小黑讨论Jensen过生日，跟大J一起回温哥华机场的事，我忍不住想JQ肯定又燃烧起来了！！</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="surprise" emotion-2-type="none" keyexpression1="没想到">结果刚刚KANA来跟我说八卦：J2周末一起公然出现在某个GAY BAR（CLUB 560），没想到被人给看见了！！！</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="surprise" emotion-2-type="none" keyexpression1="要疯狂了">谁能告诉我这是不是真的啊啊啊啊啊啊，我要疯狂了~~~~~~~~~</sentence>
+  </weibo>
+  <weibo id="10" emotion-type1="sadness" emotion-type2="none">
+    <sentence id="1" opinionated="N" keyexpression1="null">我嗨了····一不小心花了2快钱定制了个您好，您拨打的用户已关机的彩铃！！！</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="sadness" emotion-2-type="none" keyexpression1="无奈了">我无奈了！！！</sentence>
+    <sentence id="3" opinionated="N" keyexpression1="null">谁给我打电话听到这个彩铃的话就证明！</sentence>
+    <sentence id="4" opinionated="N" keyexpression1="null">你是0点到6点之间给我打的！！！</sentence>
+    <sentence id="5" opinionated="N" keyexpression1="null">为啥这么晚，或者说这么早就给我打电话！</sentence>
+  </weibo>
+  <weibo id="11" emotion-type1="disgust" emotion-type2="sadness">
+    <sentence id="1" opinionated="N" keyexpression1="null">昨天刚从欧洲回来，本来明天（3月13日）要去日本，因为日本大地震，形成向后延迟。</sentence>
+    <sentence id="2" opinionated="N" keyexpression1="null">看电视上日本各地的受灾情况，不由想起08年的汶川地震。</sentence>
+    <sentence id="3" opinionated="N" keyexpression1="null">深深地为日本人民祈福，愿他们早日从地震的噩梦中苏醒过来。</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="disgust" emotion-2-type="none" keyexpression1="无语了">但是在网上看到有些人在热烈庆祝日本地震，无语了。</sentence>
+    <sentence id="5" opinionated="Y" emotion-1-type="sadness" emotion-2-type="none" keyexpression1="唉">唉！</sentence>
+    <sentence id="6" opinionated="N" keyexpression1="null">狭隘的爱国主义如何能让中国伟大复兴！！</sentence>
+  </weibo>
+  <weibo id="12" emotion-type1="anger" emotion-type2="none">
+    <sentence id="1" opinionated="N" keyexpression1="null">报道说：发改委对联合利华实行200万的处罚，缘由为3月份散布涨价信息。</sentence>
+    <sentence id="2" opinionated="N" keyexpression1="null">这理由太牵强了点，如果3月份不约谈联合利华不让涨价人家会不涨么？</sentence>
+  </weibo>
+  <weibo id="13" emotion-type1="happiness" emotion-type2="none">
+    <sentence id="1" opinionated="Y" emotion-1-type="happiness" emotion-2-type="none" keyexpression1="很高兴">做梦都梦到老板在帮我改proposal...然后瞬间在梦里反应过来我靠下午了答应客户上午打的电话没打，明就走了来不及了怎么办怎么办，然后瞬间醒过来，很高兴的发现天还没亮，于是默念一百遍记得早上到公司就给客户电话电话电话然后踏实的再次睡着了。。。</sentence>
+  </weibo>
+  <weibo id="14" emotion-type1="like" emotion-type2="none">
+    <sentence id="1" opinionated="Y" emotion-1-type="like" emotion-2-type="none" keyexpression1="很野味哦">很野味哦。。。</sentence>
+    <sentence id="2" opinionated="N" keyexpression1="null">就是好辣。。。</sentence>
+    <sentence id="3" opinionated="N" keyexpression1="null">做的时候都味道刺激味蕾的气味真扑鼻。。。</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="like" emotion-2-type="none" keyexpression1="null">白胡椒祛湿。。。</sentence>
+    <sentence id="5" opinionated="Y" emotion-1-type="like" emotion-2-type="none" keyexpression1="很香">黑胡椒很香。。</sentence>
+  </weibo>
+  <weibo id="15" emotion-type1="surprise" emotion-type2="none">
+    <sentence id="1" opinionated="N" keyexpression1="null">听说SimSimi最近很火？</sentence>
+    <sentence id="2" opinionated="N" keyexpression1="null">狗萌萌忍不住去试了试.......</sentence>
+    <sentence id="3" opinionated="Y" emotion-1-type="surprise" emotion-2-type="none" keyexpression1="太特么黑了">结果发现这货太特么黑了！！</sentence>
+    <sentence id="4" opinionated="Y" emotion-1-type="surprise" emotion-2-type="none" keyexpression1="太凶残">瞧瞧他各种吐槽，这小鸡太凶残.....</sentence>
+    <sentence id="5" opinionated="N" keyexpression1="null">注：SimSimi是一个国外开发的聊天app，以小鸡为自己形象。</sentence>
+  </weibo>
+  <weibo id="16" emotion-type1="happiness" emotion-type2="like">
+    <sentence id="1" opinionated="Y" emotion-1-type="happiness" emotion-2-type="like" keyexpression1="多幸福">如果可以经常休息该多好·如果可以天天出去玩 多好··如果 有那么多的如果 我该多幸福··？</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="happiness" emotion-2-type="none" keyexpression1="好开心">[哈哈] 好开心的一天 奥特曼········[心]</sentence>
+  </weibo>
+</SampleData>
