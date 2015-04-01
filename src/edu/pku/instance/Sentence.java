@@ -50,6 +50,17 @@ public class Sentence {
 	    this.text = text;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param text
+	 */
+	public Sentence(int id, String text) {
+	    this.id = id;
+	    this.text = text;
+	    this.emotionType1 = this.emotionType2 = -1;
+	}
+	
     public int getId() {
         return id;
     }
