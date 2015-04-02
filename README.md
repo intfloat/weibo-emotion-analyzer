@@ -4,7 +4,11 @@
 
 # how to run
 
-以后再添加。。。
+将项目import到eclipse中，选择Main.java -> run as -> java application， 或者用命令行也行    
+
+# 如何增加特征
+
+新建一个class，实现FeatureExtractorInterface接口，并在FeatureExtractor类中setup调用registerExtractor进行注册即可。
 
 # contributors
 
