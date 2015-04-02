@@ -51,16 +51,14 @@ public class XMLUtils {
             if (weibo.hasAttribute("emotion-type2"))
                 emotion2 = weibo.getAttribute("emotion-type2");
             Weibo val = new Weibo(id, emotion1, emotion2);
-            NodeList ss = weibo.getElementsByTagName("sentence");
+            NodeList ss = weibo.getElementsByTagName("sentence");            
 //          for every sentence in current weibo
             for (int j = 0; j < ss.getLength(); ++j) {
                 Element sentence = (Element) ss.item(j);
                 int sid = Integer.parseInt(sentence.getAttribute("id"));
                 String text = sentence.getTextContent();
-                boolean opinion = false;
-                boolean empty = true;
-                if (sentence.hasAttribute("opinionated")) {
-                    empty = false;
+                boolean opinion = false;                
+                if (sentence.hasAttribute("opinionated")) {                    
                     String op = sentence.getAttribute("opinionated");
                     if (op.equalsIgnoreCase("Y")) opinion = true;
                 }
@@ -74,8 +72,8 @@ public class XMLUtils {
                 if (sentence.hasAttribute("keyexpression1"))
                     expression = sentence.getAttribute("keyexpression1");
 //              there is no opinion label, probably be test data
-                if (empty) val.addSentence(new Sentence(sid, text));
-                else val.addSentence(new Sentence(sid, opinion, em1, em2, expression));
+                if (null == em1 || null == em2) val.addSentence(new Sentence(sid, text));
+                else val.addSentence(new Sentence(sid, opinion, em1, em2, expression, text));
             }
             result.add(val);
         }

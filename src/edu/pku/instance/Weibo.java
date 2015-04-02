@@ -51,6 +51,22 @@ public class Weibo {
         this.sentences.add(s);
         return;
     }
+    
+    @Override
+    public String toString() {
+        String res = null;
+        try {
+            res = "Id: " + weiboId + " "
+                        + "Emotion1: " + Category.getEmotionString(weiboEmotionType1) + " "
+                        + "Emotion2: " + Category.getEmotionString(weiboEmotionType2) + " \n";
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        for (Sentence st : sentences)
+            res += st + " \n";
+        return res;
+    }
 
     public ArrayList<Sentence> getSentences() {
         return sentences;

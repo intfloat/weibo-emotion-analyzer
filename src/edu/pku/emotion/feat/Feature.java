@@ -41,7 +41,7 @@ public class Feature {
     
     @Override
     public String toString() {
-        return this.index + " " + this.desc;
+        return  this.desc + ":" + this.value;
     }
 
     public String getDesc() {

@@ -26,11 +26,12 @@ public class Sentence {
 	 * @param text
 	 * @throws Exception 
 	 */
-	public Sentence(int id, boolean opinion, String emotion1, String emotion2, String text) throws Exception {
+	public Sentence(int id, boolean opinion, String emotion1, String emotion2, String expression, String text) throws Exception {
 	   this.id = id;
 	   this.opinionated = opinion;
 	   this.emotionType1 = Category.getEmotionIndex(emotion1);
 	   this.emotionType2 = Category.getEmotionIndex(emotion2);
+	   this.keyExpression = expression;
 	   this.text = text;
 	}
 	
@@ -42,12 +43,32 @@ public class Sentence {
 	 * @param emotion2
 	 * @param text
 	 */
-	public Sentence(int id, boolean opinion, int emotion1, int emotion2, String text) {
+	public Sentence(int id, boolean opinion, int emotion1, int emotion2, String expression, String text) {
 	    this.id = id;
 	    this.opinionated = opinion;
 	    this.emotionType1 = emotion1;
 	    this.emotionType2 = emotion2;
+	    this.keyExpression = expression;
 	    this.text = text;
+	}
+	
+	@Override
+	public String toString() {
+	    String res = null;
+        try {
+            res = "SentenceId: " + id + " "
+                        + "Opinionated: " + this.opinionated + " ";
+            if (this.opinionated) {
+                res += "Emotion1: " + Category.getEmotionString(this.emotionType1) + " "
+                        + "Emotion2: " + Category.getEmotionString(this.emotionType2) + " ";
+            }
+            res += "text: " + this.text;
+                     
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+	    return res;
 	}
 	
 	/**
@@ -59,6 +80,7 @@ public class Sentence {
 	    this.id = id;
 	    this.text = text;
 	    this.emotionType1 = this.emotionType2 = -1;
+	    this.keyExpression = null;
 	}
 	
     public int getId() {

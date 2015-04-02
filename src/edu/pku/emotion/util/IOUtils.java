@@ -16,34 +16,47 @@ import edu.pku.instance.Weibo;
 public class IOUtils {
     
     private static final String confPath = "conf/weibo.conf";
-    private static final String trainClass = "train_classification";
-    private static final String testClass = "test_classification";
-    private static final String trainExpression = "train_expression";
-    private static final String testExpression = "test_expression";
+    public static final String trainClass = "train_classification";
+    public static final String testClass = "test_classification";
+    public static final String trainExpression = "train_expression";
+    public static final String testExpression = "test_expression";
     private static HashMap<String, String> conf = null;
     
-    public ArrayList<Weibo> loadClassTrainData() throws Exception {
+    public static ArrayList<Weibo> loadClassTrainData() throws Exception {
         if (conf == null) loadConf();        
         return XMLUtils.readXML(new File(conf.get(trainClass)));
     }
     
-    public ArrayList<Weibo> loadClassTestData() throws Exception {
+    public static ArrayList<Weibo> loadClassTestData() throws Exception {
         if (conf == null) loadConf();        
         return XMLUtils.readXML(new File(conf.get(testClass)));
     }
     
-    public ArrayList<Weibo> loadExpressionTrainData() throws Exception {
+    public static ArrayList<Weibo> loadExpressionTrainData() throws Exception {
         if (conf == null) loadConf();        
         return XMLUtils.readXML(new File(conf.get(trainExpression)));
     }
     
-    public ArrayList<Weibo> loadExpressionTestData() throws Exception {
+    public static ArrayList<Weibo> loadExpressionTestData() throws Exception {
         if (conf == null) loadConf();        
         return XMLUtils.readXML(new File(conf.get(testExpression)));
     }
     
+    /**
+     * 
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    public static String getConfValue(String key) throws Exception {
+        if (conf == null) loadConf();
+        if (!conf.containsKey(key))
+            throw new Exception("Can not find key: " + key);
+        return conf.get(key);
+    }
+    
     @SuppressWarnings("resource")
-    private void loadConf() throws Exception {
+    private static void loadConf() throws Exception {
         if (conf == null) conf = new HashMap<String, String>();
         File file = new File(confPath);
         Scanner reader = new Scanner(file);        

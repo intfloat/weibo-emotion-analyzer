@@ -17,10 +17,10 @@ public class Category {
 	private static final String LIKE = "like";
 	private static final String SADNESS = "sadness";
 	private static final String SURPRISE = "surprise";
-	private static final String NULL = "null";
-	private static final String[] emotions = {ANGER, DISGUST, FEAR, 
+	private static final String NONE = "none";
+	private static final String[] emotions = {NONE, DISGUST, FEAR, 
 		                                      HAPPINESS, LIKE, SADNESS, 
-		                                      SURPRISE, NULL};
+		                                      SURPRISE, ANGER};
 	
 	/**
 	 * 
@@ -28,7 +28,7 @@ public class Category {
 	 * @return
 	 * @throws Exception
 	 */
-	public static int getEmotionIndex(String emotion) throws Exception {
+	public static int getEmotionIndex(String emotion) throws Exception {	    
 	    for (int i = 0; i < emotions.length; ++i) {
 	        if (emotion.equalsIgnoreCase(emotions[i]))
 	            return i;
@@ -43,7 +43,8 @@ public class Category {
 	 * @throws Exception
 	 */
 	public static String getEmotionString(int index) throws Exception {
-	    if (index >= emotions.length || index < 0) 
+	    if (index < 0) return NONE;
+	    if (index >= emotions.length) 
 	        throw new Exception("Illegal index: " + index + "maximum: " + emotions.length);
 	    return emotions[index];
 	}
