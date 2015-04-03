@@ -4,3 +4,6 @@ a.out
 *.pyc
 .class
 /bin
+Test.java
+words.txt
+out.*
