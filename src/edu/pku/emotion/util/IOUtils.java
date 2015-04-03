@@ -45,6 +45,11 @@ public class IOUtils {
         return XMLUtils.readXML(new File(conf.get(testExpression)));
     }
     
+    /**
+     * 
+     * @param out
+     * @throws Exception
+     */
     public static void dumpAllCharacters(File out) throws Exception {
         if (conf == null) loadConf();
         FileWriter writer = new FileWriter(out);
@@ -60,6 +65,12 @@ public class IOUtils {
         return;
     }
     
+    /**
+     * 
+     * @param writer
+     * @param data
+     * @throws Exception
+     */
     private static void dumpAux(FileWriter writer, ArrayList<Weibo> data) throws Exception {
         for (Weibo weibo : data) {
             for (Sentence sent : weibo.getSentences()) {
@@ -68,12 +79,54 @@ public class IOUtils {
                 for (int i = 0; i < text.length(); ++i) {
                     char c = text.charAt(i);
                     if (c == ' ') continue;
+//                  detect emotion symbols
+                    if (c == '[') {
+                        int pos = i + 2; // should not be empty between two brackets 
+                        boolean emotion = false;
+                        while (pos < text.length() && pos - i <= 4) {
+                            if (text.charAt(pos) == ']') {
+                                emotion = true;
+//                                System.err.println(text.subSequence(i, pos + 1));
+                                writer.write(text.subSequence(i, pos + 1) + " ");
+                                i = pos;
+                                break;
+                            }
+                            ++pos;
+                        }
+                        if (emotion) continue;
+                    }
+//                  detect english words
+                    if (isEnglishLetter(c)) {
+                        int pos = i + 1;
+                        while (pos < text.length() && isEnglishLetter(text.charAt(pos))) ++pos;
+//                        System.err.println(text.subSequence(i, pos));
+                        writer.write(text.subSequence(i, pos) + " ");
+                        i = pos - 1;
+                        continue;
+                    }
+//                  detect number
+                    if (isNumber(c)) {
+                        int pos = i + 1;
+                        while (pos < text.length() && isNumber(text.charAt(pos))) ++pos;
+//                        System.err.println(text.subSequence(i, pos));
+                        writer.write(text.subSequence(i, pos) + " ");
+                        i = pos - 1;
+                        continue;
+                    }
                     writer.write(c + " ");
                 }
                 writer.write("\n");
             }
         }
         return;
+    }
+    
+    private static boolean isEnglishLetter(char c) {
+        return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+    }
+    
+    private static boolean isNumber(char c) {
+        return c >= '0' && c <= '9';
     }
     
     /**
