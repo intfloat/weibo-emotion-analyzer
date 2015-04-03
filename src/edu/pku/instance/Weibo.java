@@ -24,8 +24,10 @@ public class Weibo {
      */
     public Weibo(int id, String emotion1, String emotion2) throws Exception {
         this.weiboId = id;
-        this.weiboEmotionType1 = Category.getEmotionIndex(emotion1);
-        this.weiboEmotionType2 = Category.getEmotionIndex(emotion2);
+        if (emotion1 == null) this.weiboEmotionType1 = -1;
+        else this.weiboEmotionType1 = Category.getEmotionIndex(emotion1);
+        if (emotion2 == null) this.weiboEmotionType2 = -1;
+        else this.weiboEmotionType2 = Category.getEmotionIndex(emotion2);
         this.sentences = new ArrayList<Sentence>();
     }
     

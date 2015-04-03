@@ -21,7 +21,7 @@ public class Main {
 	 * @param args
 	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {	    
 	    System.err.println("Start to load data from: " + IOUtils.getConfValue(IOUtils.trainClass));
 		ArrayList<Weibo> train_data = IOUtils.loadClassTrainData();
 		System.err.println("Start to extract feature......");
@@ -33,7 +33,7 @@ public class Main {
 		    for (Feature f : features)
 		        System.out.println(f);
 		}
-		System.err.println("Finish extracting features");
+		System.err.println("Done");
 		return;
 	}
 }
