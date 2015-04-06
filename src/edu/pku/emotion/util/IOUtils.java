@@ -83,7 +83,7 @@ public class IOUtils {
                     if (c == '[') {
                         int pos = i + 2; // should not be empty between two brackets 
                         boolean emotion = false;
-                        while (pos < text.length() && pos - i <= 4) {
+                        while (pos < text.length() && pos - i <= 8) {
                             if (text.charAt(pos) == ']') {
                                 emotion = true;
 //                                System.err.println(text.subSequence(i, pos + 1));
