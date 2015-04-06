@@ -10,6 +10,12 @@
 
 新建一个class，实现FeatureExtractorInterface接口，并在FeatureExtractor类中setup调用registerExtractor进行注册即可。
 
+# 模型
+
+先用bag-of-words feature训练一个gradient boosting tree模型作为baseline
+
+再尝试用CNN + Hierarchical Softmax改进，后面这个相对复杂，效果不一定好，需要不断尝试。
+
 # contributors
 
 [王亮](weibo.com/intfloat)
