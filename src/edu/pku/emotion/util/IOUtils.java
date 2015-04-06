@@ -1,8 +1,13 @@
 package edu.pku.emotion.util;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -43,6 +48,31 @@ public class IOUtils {
     public static ArrayList<Weibo> loadExpressionTestData() throws Exception {
         if (conf == null) loadConf();        
         return XMLUtils.readXML(new File(conf.get(testExpression)));
+    }
+    
+    /**
+     * for Chinese, text should be segmented first, such as<br>
+     * <code> getEmbedding("情 绪 不 稳 定 的 女 人 啊 。 。 。")</code>
+     * <br>for English, use space to segment words.
+     * 
+     * @param text 
+     * @param host normally will be 162.105.80.102
+     * @param port normally will be 6789
+     * @return vector representation of given text
+     * @throws IOException 
+     * @throws UnknownHostException 
+     */
+    public static double[] getEmbedding(String text, String host, int port) throws UnknownHostException, IOException {
+        Socket clientSocket = new Socket(host, port);
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        outToServer.writeUTF(text + "\n");
+        String vector = inFromServer.readLine().trim();
+        String[] embedding = vector.split("\\s++");
+        double[] res = new double[embedding.length];
+        for (int i = 0; i < embedding.length; ++i) res[i] = Double.parseDouble(embedding[i]);
+        clientSocket.close();
+        return res;
     }
     
     /**
