@@ -28,6 +28,8 @@ public class IOUtils {
     public static final String testClass = "test_classification";
     public static final String trainExpression = "train_expression";
     public static final String testExpression = "test_expression";
+    public static final String HOST = "162.105.80.102";
+    public static final int PORT = 6789;
     private static HashMap<String, String> conf = null;
     
     public static ArrayList<Weibo> loadClassTrainData() throws Exception {
@@ -62,15 +64,15 @@ public class IOUtils {
      * @throws IOException 
      * @throws UnknownHostException 
      */
-    public static double[] getEmbedding(String text, String host, int port) throws UnknownHostException, IOException {
+    public static float[] getEmbedding(String text, String host, int port) throws UnknownHostException, IOException {
         Socket clientSocket = new Socket(host, port);
         DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         outToServer.writeUTF(text + "\n");
         String vector = inFromServer.readLine().trim();
         String[] embedding = vector.split("\\s++");
-        double[] res = new double[embedding.length];
-        for (int i = 0; i < embedding.length; ++i) res[i] = Double.parseDouble(embedding[i]);
+        float[] res = new float[embedding.length];
+        for (int i = 0; i < embedding.length; ++i) res[i] = Float.parseFloat(embedding[i]);
         clientSocket.close();
         return res;
     }

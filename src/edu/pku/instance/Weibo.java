@@ -14,6 +14,7 @@ public class Weibo {
     private int weiboId;
     private int weiboEmotionType1;
     private int weiboEmotionType2;
+    private float[] embedding;
     
     /**
      * 
@@ -52,6 +53,15 @@ public class Weibo {
         if (this.sentences == null) this.sentences = new ArrayList<Sentence>();
         this.sentences.add(s);
         return;
+    }
+    
+    public String getWeiboText() {
+        if (this.sentences == null) return "";
+        String res = "";
+        for (Sentence s : this.sentences) {
+            res = res + " " + s.getText();
+        }
+        return res;
     }
     
     @Override
@@ -100,6 +110,14 @@ public class Weibo {
 
     public void setWeiboEmotionType2(int weiboEmotionType2) {
         this.weiboEmotionType2 = weiboEmotionType2;
+    }
+
+    public float[] getEmbedding() {
+        return embedding;
+    }
+
+    public void setEmbedding(float[] embedding) {
+        this.embedding = embedding;
     }
     
 

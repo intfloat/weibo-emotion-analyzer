@@ -16,6 +16,7 @@ public class Sentence {
 	private int emotionType1;
 	private int emotionType2;
 	private String text;
+	private float[] embedding;
 	
 	/**
 	 * 
@@ -118,5 +119,13 @@ public class Sentence {
     }
     public void setText(String text) {
         this.text = text;
+    }
+
+    public float[] getEmbedding() {
+        return embedding;
+    }
+
+    public void setEmbedding(float[] embedding) {
+        this.embedding = embedding;
     }
 }

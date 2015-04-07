@@ -24,6 +24,7 @@ public class FeatureExtractor {
     private static void setup() {
 //      THIS IS THE ONLY POSITION THAT SHOULD BE MODIFIED!
         registerExtractor(new LengthFeatureExtractor());
+        registerExtractor(new RAEFeatureExtractor());
         return;
     }
     
