@@ -41,4 +41,10 @@ public class RAEFeatureExtractor implements FeatureExtractorInterface {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void extract(Sentence sentence, List<Feature> features) {
+        // TODO Auto-generated method stub
+        
+    }
 }

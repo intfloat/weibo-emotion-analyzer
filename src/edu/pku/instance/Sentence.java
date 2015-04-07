@@ -1,5 +1,9 @@
 package edu.pku.instance;
 
+import java.util.ArrayList;
+
+import edu.pku.emotion.feat.Feature;
+
 /**
  * 
  * @author intfloat@pku.edu.cn
@@ -17,6 +21,7 @@ public class Sentence {
 	private int emotionType2;
 	private String text;
 	private float[] embedding;
+	private ArrayList<Feature> features;
 	
 	/**
 	 * 
@@ -34,6 +39,7 @@ public class Sentence {
 	   this.emotionType2 = Category.getEmotionIndex(emotion2);
 	   this.keyExpression = expression;
 	   this.text = text;
+	   this.features = new ArrayList<Feature>();
 	}
 	
 	/**
@@ -51,6 +57,36 @@ public class Sentence {
 	    this.emotionType2 = emotion2;
 	    this.keyExpression = expression;
 	    this.text = text;
+	    this.features = new ArrayList<Feature>();
+	}
+	
+	/**
+	 * Dump sentence to a string, for example:
+	 * SID:3 N_LIKE_DISGUST 1:2.0 3:0.23
+	 * 
+	 * @return
+	 */
+	public String dump() {
+	    String res = "SID:" + this.id;
+	    res += " " + getLabel();
+	    for (Feature feature : this.features) {
+	        res += " " + feature.getIndex() + ":" + feature.getValue();
+	    }
+	    return res;
+	}
+	
+	private String getLabel() {
+	    String label = "";
+	    if (this.opinionated) label = "Y";
+	    else label = "N";
+	    try {
+            label += " " + Category.getEmotionString(emotionType1);
+            label += " " + Category.getEmotionString(emotionType2);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }	    
+	    return label;
 	}
 	
 	@Override
@@ -127,5 +163,13 @@ public class Sentence {
 
     public void setEmbedding(float[] embedding) {
         this.embedding = embedding;
+    }
+
+    public ArrayList<Feature> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(ArrayList<Feature> features) {
+        this.features = features;
     }
 }

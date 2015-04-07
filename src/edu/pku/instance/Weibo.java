@@ -2,6 +2,8 @@ package edu.pku.instance;
 
 import java.util.ArrayList;
 
+import edu.pku.emotion.feat.Feature;
+
 /**
  * 
  * @author intfloat@pku.edu.cn
@@ -15,6 +17,7 @@ public class Weibo {
     private int weiboEmotionType1;
     private int weiboEmotionType2;
     private float[] embedding;
+    private ArrayList<Feature> features;
     
     /**
      * 
@@ -30,6 +33,7 @@ public class Weibo {
         if (emotion2 == null) this.weiboEmotionType2 = -1;
         else this.weiboEmotionType2 = Category.getEmotionIndex(emotion2);
         this.sentences = new ArrayList<Sentence>();
+        this.features = new ArrayList<Feature>();
     }
     
     /**
@@ -43,6 +47,35 @@ public class Weibo {
         this.weiboEmotionType1 = emotion1;
         this.weiboEmotionType2 = emotion2;
         this.sentences = new ArrayList<Sentence>();
+        this.features = new ArrayList<Feature>();
+    }
+    
+    /**
+     * Dump string representation of current weibo, for example:<br>
+     * ID:2 HAPPINESS_ANGER 2:0.4 4:0.23
+     * 
+     * @return
+     */
+    public String dump() {
+        String res = "ID:" + this.weiboId;
+        res += " " + getLabel();
+//      conform to LibSVM & XGBoost format
+        for (Feature feature : this.features) {
+            res += " " + feature.getIndex() + ":" + feature.getValue();
+        }
+        return res;
+    }
+    
+    private String getLabel() {
+        String label = "";
+        try {
+            label = Category.getEmotionString(this.weiboEmotionType1);
+            label += "_" + Category.getEmotionString(this.weiboEmotionType2);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }        
+        return label;
     }
     
     /**
@@ -118,6 +151,14 @@ public class Weibo {
 
     public void setEmbedding(float[] embedding) {
         this.embedding = embedding;
+    }
+
+    public ArrayList<Feature> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(ArrayList<Feature> features) {
+        this.features = features;
     }
     
 

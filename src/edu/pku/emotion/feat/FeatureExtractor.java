@@ -3,6 +3,7 @@ package edu.pku.emotion.feat;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.pku.instance.Sentence;
 import edu.pku.instance.Weibo;
 
 /**
@@ -41,15 +42,27 @@ public class FeatureExtractor {
      * @param ins
      * @return
      */
-    public static List<Feature> extract(Weibo weibo) {
+    public static void extract(Weibo weibo) {
         if (null == extractors) {
             extractors = new ArrayList<FeatureExtractorInterface>();
             setup();
         }
-        List<Feature> result = new ArrayList<Feature>();
+        List<Feature> list = weibo.getFeatures();
+        assert list != null;
+        list.clear();
         for (FeatureExtractorInterface ext : extractors) {
-            ext.extract(weibo, result);
+            ext.extract(weibo, list);
         }
-        return result;
+        
+//      extract feature for each sentence in current weibo
+        for (Sentence s : weibo.getSentences()) {
+            list = s.getFeatures();
+            assert list != null;
+            list.clear();
+            for (FeatureExtractorInterface ext : extractors) {
+                ext.extract(s, list);
+            }
+        }
+        return;
     } // end method extract
 }

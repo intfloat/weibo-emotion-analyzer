@@ -53,6 +53,32 @@ public class IOUtils {
     }
     
     /**
+     * Dump all instance to a single file, for the convenience of later classification
+     * 
+     * @param data
+     * @param path
+     */
+    public static void dumpAllInstance(ArrayList<Weibo> data, File path) {
+        assert path.isDirectory() == false; // path can not exist now.
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(path);
+            for (Weibo weibo : data) {
+                writer.write(weibo.dump() + "\n");
+                for (Sentence sentence : weibo.getSentences()) {
+                    writer.write(sentence.dump() + "\n");
+                }
+            }
+            writer.flush();
+            if (writer != null) writer.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }        
+        return;
+    }
+    
+    /**
      * for Chinese, text should be segmented first, such as<br>
      * <code> getEmbedding("情 绪 不 稳 定 的 女 人 啊 。 。 。")</code>
      * <br>for English, use space to segment words.

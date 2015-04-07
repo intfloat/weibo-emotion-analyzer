@@ -23,10 +23,12 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {	    
 	    System.err.println("Start to load data from: " + IOUtils.getConfValue(IOUtils.trainClass));
+	    System.exit(0);
 		ArrayList<Weibo> train_data = IOUtils.loadClassTrainData();
 		System.err.println("Start to extract feature......");
 		for (Weibo weibo : train_data) {
-		    List<Feature> features = FeatureExtractor.extract(weibo);
+		    FeatureExtractor.extract(weibo);
+		    List<Feature> features = weibo.getFeatures();
 		    System.out.println("Weibo: ");
 		    System.out.println(weibo);
 		    System.out.println("Features: ");
