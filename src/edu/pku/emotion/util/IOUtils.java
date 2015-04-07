@@ -134,49 +134,57 @@ public class IOUtils {
             for (Sentence sent : weibo.getSentences()) {
                 String text = sent.getText();
                 if (text.length() == 0) continue;
-                for (int i = 0; i < text.length(); ++i) {
-                    char c = text.charAt(i);
-                    if (c == ' ') continue;
-//                  detect emotion symbols
-                    if (c == '[') {
-                        int pos = i + 2; // should not be empty between two brackets 
-                        boolean emotion = false;
-                        while (pos < text.length() && pos - i <= 8) {
-                            if (text.charAt(pos) == ']') {
-                                emotion = true;
-//                                System.err.println(text.subSequence(i, pos + 1));
-                                writer.write(text.subSequence(i, pos + 1) + " ");
-                                i = pos;
-                                break;
-                            }
-                            ++pos;
-                        }
-                        if (emotion) continue;
-                    }
-//                  detect english words
-                    if (isEnglishLetter(c)) {
-                        int pos = i + 1;
-                        while (pos < text.length() && isEnglishLetter(text.charAt(pos))) ++pos;
-//                        System.err.println(text.subSequence(i, pos));
-                        writer.write(text.subSequence(i, pos) + " ");
-                        i = pos - 1;
-                        continue;
-                    }
-//                  detect number
-                    if (isNumber(c)) {
-                        int pos = i + 1;
-                        while (pos < text.length() && isNumber(text.charAt(pos))) ++pos;
-//                        System.err.println(text.subSequence(i, pos));
-                        writer.write(text.subSequence(i, pos) + " ");
-                        i = pos - 1;
-                        continue;
-                    }
-                    writer.write(c + " ");
-                }
+                writer.write(getSegmentedCharacters(text));
                 writer.write("\n");
             }
         }
         return;
+    }
+    
+    /**
+     * 
+     * @param text
+     * @return
+     */
+    public static String getSegmentedCharacters(String text) {
+        String res = "";
+        for (int i = 0; i < text.length(); ++i) {
+            char c = text.charAt(i);
+            if (c == ' ') continue;
+//          detect emotion symbols
+            if (c == '[') {
+                int pos = i + 2; // should not be empty between two brackets 
+                boolean emotion = false;
+                while (pos < text.length() && pos - i <= 8) {
+                    if (text.charAt(pos) == ']') {
+                        emotion = true;
+                        res += text.subSequence(i, pos + 1) + " ";
+                        i = pos;
+                        break;
+                    }
+                    ++pos;
+                }
+                if (emotion) continue;
+            }
+//          detect english words
+            if (isEnglishLetter(c)) {
+                int pos = i + 1;
+                while (pos < text.length() && isEnglishLetter(text.charAt(pos))) ++pos;
+                res += text.subSequence(i, pos) + " ";
+                i = pos - 1;
+                continue;
+            }
+//          detect number
+            if (isNumber(c)) {
+                int pos = i + 1;
+                while (pos < text.length() && isNumber(text.charAt(pos))) ++pos;
+                res += text.subSequence(i, pos) + " ";
+                i = pos - 1;
+                continue;
+            }
+            res += c + " ";
+        }
+        return res.trim();
     }
     
     private static boolean isEnglishLetter(char c) {

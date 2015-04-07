@@ -42,10 +42,9 @@ public class Category {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getEmotionString(int index) throws Exception {
+	public static String getEmotionString(int index) {
 	    if (index < 0) return NONE;
-	    if (index >= emotions.length) 
-	        throw new Exception("Illegal index: " + index + "maximum: " + emotions.length);
+	    assert index < emotions.length;	    
 	    return emotions[index];
 	}
 }

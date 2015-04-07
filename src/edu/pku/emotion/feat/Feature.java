@@ -10,7 +10,7 @@ public class Feature {
     
     //  String description for a feature
     private String desc;
-    private double value;
+    private float value;
     private int index;
     
     /**
@@ -22,7 +22,7 @@ public class Feature {
      */
     public Feature(String desc) {
         this.setDesc(desc);
-        this.setValue(1.0);
+        this.setValue(1.0f);
         this.setIndex(FeatureMap.getIndex(this));
     }
     
@@ -33,7 +33,9 @@ public class Feature {
      * 
      * suitable for numerical features such as length.
      */
-    public Feature(String desc, double value) {
+    public Feature(String desc, float value) {
+//      only  preserve 3 digits after decimal point is enough
+        value = (float)Math.round(value * 1000) / 1000.0f;
         this.setDesc(desc);
         this.setValue(value);
         this.setIndex(FeatureMap.getIndex(this));     
@@ -55,11 +57,11 @@ public class Feature {
         this.desc = desc;
     }
 
-    public double getValue() {
+    public float getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(float value) {
         this.value = value;
     }
 

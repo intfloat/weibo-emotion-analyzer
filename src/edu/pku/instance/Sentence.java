@@ -61,6 +61,19 @@ public class Sentence {
 	}
 	
 	/**
+     * 
+     * @param id
+     * @param text
+     */
+    public Sentence(int id, String text) {
+        this.id = id;
+        this.text = text;
+        this.emotionType1 = this.emotionType2 = -1;
+        this.keyExpression = null;
+        this.features = new ArrayList<Feature>();
+    }
+	
+	/**
 	 * Dump sentence to a string, for example:
 	 * SID:3 N_LIKE_DISGUST 1:2.0 3:0.23
 	 * 
@@ -80,8 +93,8 @@ public class Sentence {
 	    if (this.opinionated) label = "Y";
 	    else label = "N";
 	    try {
-            label += " " + Category.getEmotionString(emotionType1);
-            label += " " + Category.getEmotionString(emotionType2);
+            label += "_" + Category.getEmotionString(emotionType1);
+            label += "_" + Category.getEmotionString(emotionType2);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -106,19 +119,7 @@ public class Sentence {
             e.printStackTrace();
         }
 	    return res;
-	}
-	
-	/**
-	 * 
-	 * @param id
-	 * @param text
-	 */
-	public Sentence(int id, String text) {
-	    this.id = id;
-	    this.text = text;
-	    this.emotionType1 = this.emotionType2 = -1;
-	    this.keyExpression = null;
-	}
+	}	
 	
     public int getId() {
         return id;
