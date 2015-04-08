@@ -2,7 +2,9 @@ package edu.pku;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import edu.pku.emotion.feat.FeatureExtractor;
+import edu.pku.emotion.feat.LabelMap;
 import edu.pku.emotion.util.IOUtils;
 import edu.pku.instance.Weibo;
 
@@ -46,6 +48,7 @@ public class Main {
             FeatureExtractor.extract(weibo);
         }
         IOUtils.dumpAllInstance(test_data, new File(testClassIns));
+        System.err.println("Label mapping: \n" + LabelMap.getLabelMapping());
         System.err.println("Done");
         return;
     }

@@ -3,6 +3,7 @@ package edu.pku.instance;
 import java.util.ArrayList;
 
 import edu.pku.emotion.feat.Feature;
+import edu.pku.emotion.feat.LabelMap;
 
 /**
  * 
@@ -58,7 +59,7 @@ public class Weibo {
      */
     public String dump() {
         String res = "ID:" + this.weiboId;
-        res += " " + getLabel();
+        res += " " + LabelMap.getIndex(getLabel());
 //      conform to LibSVM & XGBoost format
         for (Feature feature : this.features) {
             res += " " + feature.getIndex() + ":" + feature.getValue();

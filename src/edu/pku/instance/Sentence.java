@@ -3,6 +3,7 @@ package edu.pku.instance;
 import java.util.ArrayList;
 
 import edu.pku.emotion.feat.Feature;
+import edu.pku.emotion.feat.LabelMap;
 
 /**
  * 
@@ -81,7 +82,7 @@ public class Sentence {
 	 */
 	public String dump() {
 	    String res = "SID:" + this.id;
-	    res += " " + getLabel();
+	    res += " " + LabelMap.getIndex(getLabel());
 	    for (Feature feature : this.features) {
 	        res += " " + feature.getIndex() + ":" + feature.getValue();
 	    }
