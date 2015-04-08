@@ -24,6 +24,22 @@
 
 [theano](https://github.com/Theano/Theano)
 
+# 相同数据集上的tutorial
+
+NLPCC14上有几个ppt：
+
+[Emotion Classification of Chinese Microblog Text via Fusion of BoW and eVector Feature Representations](http://tcci.ccf.org.cn/conference/2014/ppts/nlpcc/ppt192.pdf)
+
+基本思想：用了bag of words特征，然后自己搞了个公式，算出每个词在情绪上的分布，送给普通的分类器。
+
+[A Novel Calibrated Label Ranking Based Method for Multiple Emotions Detection in Chinese Microblogs](http://tcci.ccf.org.cn/conference/2014/ppts/nlpcc/ppt200.pdf)
+
+基本思想：这个是排名第一的系统，对emotion label去做ranking
+
+[ Emotion Analysis in Chinese Weibo Texts(Tsinghua University)](http://tcci.ccf.org.cn/conference/2014/ppts/nlpcc/ppttmp02.pdf)
+
+基本思想： 利用那些诸如😃的表情符号去做分类。
+
 # contributors
 
 [王亮](weibo.com/intfloat)
