@@ -22531,7 +22531,7 @@
   </weibo>
   <weibo id="4876" emotion-type1="happiness" emotion-type2="none">
     <sentence id="1" opinionated="N">这朋友注意身体！</sentence>
-    <sentence id="2" opinionated="Y" emotion-1-type="happiness" emotion-2-type="happiness">这得穿到神马时候啊[偷笑]</sentence>
+    <sentence id="2" opinionated="Y" emotion-1-type="happiness" emotion-2-type="none">这得穿到神马时候啊[偷笑]</sentence>
     <sentence id="3" opinionated="Y" emotion-1-type="like" emotion-2-type="none">//@四喜团子: 这几天都这个，但就这个我信！</sentence>
     <sentence id="4" opinionated="Y" emotion-1-type="like" emotion-2-type="none">我信了！</sentence>
   </weibo>

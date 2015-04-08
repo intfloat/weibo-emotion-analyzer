@@ -16,7 +16,7 @@
 
 再尝试用CNN + Hierarchical Softmax改进，后面这个相对复杂，效果不一定好，需要不断尝试。
 
-# 以来的开源项目
+# 依赖的开源项目
 
 [XGBoost](https://github.com/dmlc/xgboost)
 
