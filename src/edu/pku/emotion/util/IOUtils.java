@@ -31,6 +31,9 @@ public class IOUtils {
     public static final String HOST = "162.105.80.102";
     public static final int PORT = 6789;
     private static HashMap<String, String> conf = null;
+    private static Socket clientSocket = null;
+    private static DataOutputStream outToServer = null;
+    private static BufferedReader inFromServer = null;
     
     public static ArrayList<Weibo> loadClassTrainData() throws Exception {
         if (conf == null) loadConf();        
@@ -90,15 +93,15 @@ public class IOUtils {
      * @throws IOException 
      * @throws UnknownHostException 
      */
-    public static float[] getEmbedding(String text, String host, int port) throws UnknownHostException, IOException {
-        Socket clientSocket = new Socket(host, port);
-        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    public static float[] getEmbedding(String text) throws UnknownHostException, IOException {        
+        clientSocket = new Socket(HOST, PORT);        
+        outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));        
         outToServer.writeUTF(text + "\n");
         String vector = inFromServer.readLine().trim();
         String[] embedding = vector.split("\\s++");
         float[] res = new float[embedding.length];
-        for (int i = 0; i < embedding.length; ++i) res[i] = Float.parseFloat(embedding[i]);
+        for (int i = 0; i < embedding.length; ++i) res[i] = Float.parseFloat(embedding[i]); 
         clientSocket.close();
         return res;
     }

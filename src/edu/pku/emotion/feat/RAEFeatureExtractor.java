@@ -17,16 +17,14 @@ import edu.pku.instance.Weibo;
  */
 public class RAEFeatureExtractor implements FeatureExtractorInterface {
     
-    private static final String EMBEDDING_ = "embedding_";
+    private static final String EMBEDDING_ = "embedding_";    
 
     @Override
     public void extract(Weibo weibo, List<Feature> features) {
         // TODO Auto-generated method stub
         if (weibo.getEmbedding() == null || weibo.getEmbedding().length == 0) {
-            try {
-                weibo.setEmbedding(IOUtils.getEmbedding(IOUtils.getSegmentedCharacters(weibo.getWeiboText()), 
-                                   IOUtils.HOST, 
-                                   IOUtils.PORT));
+            try {                
+                weibo.setEmbedding(IOUtils.getEmbedding(IOUtils.getSegmentedCharacters(weibo.getWeiboText())));                
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -43,10 +41,8 @@ public class RAEFeatureExtractor implements FeatureExtractorInterface {
     public void extract(Sentence sentence, List<Feature> features) {
         // TODO Auto-generated method stub
         if (sentence.getEmbedding() == null || sentence.getEmbedding().length == 0) {
-            try {
-                sentence.setEmbedding(IOUtils.getEmbedding(IOUtils.getSegmentedCharacters(sentence.getText()), 
-                        IOUtils.HOST, 
-                        IOUtils.PORT));
+            try {                
+                sentence.setEmbedding(IOUtils.getEmbedding(IOUtils.getSegmentedCharacters(sentence.getText())));                
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

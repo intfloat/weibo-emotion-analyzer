@@ -23,9 +23,9 @@ public class FeatureExtractor {
      * and register your class in setup() function
      */
     private static void setup() {
-//      THIS IS THE ONLY POSITION THAT SHOULD BE MODIFIED!
-        registerExtractor(new LengthFeatureExtractor());
+//      THIS IS THE ONLY POSITION THAT SHOULD BE MODIFIED!        
         registerExtractor(new RAEFeatureExtractor());
+//        registerExtractor(new LengthFeatureExtractor());
         return;
     }
     
