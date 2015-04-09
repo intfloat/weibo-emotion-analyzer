@@ -1,11 +1,11 @@
 package edu.pku;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 import edu.pku.emotion.feat.FeatureExtractor;
 import edu.pku.emotion.feat.LabelMap;
-import edu.pku.emotion.feat.RAEFeatureExtractor;
 import edu.pku.emotion.util.IOUtils;
 import edu.pku.instance.Weibo;
 
@@ -19,6 +19,7 @@ public class Main {
     
     private static final String trainClassIns = "data/train_class.txt";
     private static final String testClassIns = "data/test_class.txt";
+    private static final String labelMapping = "data/label.map";
 //    private static final String trainExpressionIns = "data/train_expression.txt";
 //    private static final String testExpressionIns = "data/test_expression.txt";
     
@@ -46,6 +47,7 @@ public class Main {
         extractAndDump(test_data, new File(testClassIns));
         
         System.err.println("Label mapping: \n" + LabelMap.getLabelMapping());
+        saveLabelMapping(new File(labelMapping));
         System.err.println("Done");
         return;
     }
@@ -59,10 +61,23 @@ public class Main {
         int cnt = 0;
         for (Weibo weibo : data) {
             ++cnt;
-            if (cnt % 10 == 0) System.err.println("train_data: " + cnt);
+            if (cnt % 10 == 0) System.err.println("data: " + cnt);
             FeatureExtractor.extract(weibo);
         }
         IOUtils.dumpAllInstance(data, path);
+        return;
+    }
+    
+    /**
+     *  
+     * @param path
+     * @throws Exception
+     */
+    private static void saveLabelMapping(File path) throws Exception {
+        FileWriter writer = new FileWriter(path);
+        writer.write(LabelMap.getLabelMapping());
+        writer.flush();
+        writer.close();
         return;
     }
 }

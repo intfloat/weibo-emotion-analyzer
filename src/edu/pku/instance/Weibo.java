@@ -52,31 +52,29 @@ public class Weibo {
     }
     
     /**
-     * Dump string representation of current weibo, for example:<br>
-     * ID:2 HAPPINESS_ANGER 2:0.4 4:0.23
-     * 
+     * Dump string representation of current weibo
      * @return
      */
     public String dump() {
-        String res = "ID:" + this.weiboId;
-        res += " " + LabelMap.getIndex(getLabel());
-//      conform to LibSVM & XGBoost format
+//      primary sentiment
+        String sent1 = "WPID:" + this.weiboId + " ";
+        sent1 += LabelMap.getIndex(Category.getEmotionString(weiboEmotionType1));
+        sent1 += getFeatureString();
+        
+//      secondary sentiment
+        String sent2 = "WSID:" + this.weiboId + " ";
+        sent2 += LabelMap.getIndex(Category.getEmotionString(weiboEmotionType2));
+        sent2 += getFeatureString();
+        
+        return sent1 + "\n" + sent2;
+    }
+    
+    private String getFeatureString() {
+        String res = "";
         for (Feature feature : this.features) {
             res += " " + feature.getIndex() + ":" + feature.getValue();
         }
         return res;
-    }
-    
-    private String getLabel() {
-        String label = "";
-        try {
-            label = Category.getEmotionString(this.weiboEmotionType1);
-            label += "_" + Category.getEmotionString(this.weiboEmotionType2);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }        
-        return label;
     }
     
     /**

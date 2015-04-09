@@ -75,33 +75,43 @@ public class Sentence {
     }
 	
 	/**
-	 * Dump sentence to a string, for example:
-	 * SID:3 N_LIKE_DISGUST 1:2.0 3:0.23
+	 * Dump sentence to a string, for opinion classification & multi label
+	 * sentiment classification, a sentence could produce three lines,
+	 * for example: <br>
 	 * 
+	 * OSID:1 Y 0:12 4:0.3
+	 * SID:1 DISGUST 0:12 4:0.3
+	 * EID:1 NONE 0:12 4:0.3
+	 * 
+	 * <br> basic idea is to construct multiple instance for multi label classification
 	 * @return
 	 */
 	public String dump() {
-	    String res = "SID:" + this.id;
-	    res += " " + LabelMap.getIndex(getLabel());
-	    for (Feature feature : this.features) {
-	        res += " " + feature.getIndex() + ":" + feature.getValue();
-	    }
-	    return res;
+	    String op = "SOID:" + this.id + " ";
+	    if (this.opinionated) op += "Y";
+	    else op += "N";
+	    op += getFeatureString();
+	    
+//	    primary sentiment
+	    String sent1 = "SPID:" + this.id + " ";
+	    sent1 += LabelMap.getIndex(Category.getEmotionString(emotionType1));
+	    sent1 += getFeatureString();
+	    
+//	    secondary sentiment
+	    String sent2 = "SSID:" + this.id + " ";
+	    sent2 += LabelMap.getIndex(Category.getEmotionString(emotionType2));
+	    sent2 += getFeatureString();
+	    
+	    return op + "\n" + sent1 + "\n" + sent2;
 	}
 	
-	private String getLabel() {
-	    String label = "";
-	    if (this.opinionated) label = "Y";
-	    else label = "N";
-	    try {
-            label += "_" + Category.getEmotionString(emotionType1);
-            label += "_" + Category.getEmotionString(emotionType2);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }	    
-	    return label;
-	}
+	private String getFeatureString() {
+	    String res = "";
+	    for (Feature feature : this.features) {
+            res += " " + feature.getIndex() + ":" + feature.getValue();
+        }
+	    return res;
+	}	
 	
 	@Override
 	public String toString() {
