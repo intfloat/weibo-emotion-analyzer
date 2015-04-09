@@ -88,8 +88,8 @@ public class Sentence {
 	 */
 	public String dump() {
 	    String op = "SOID:" + this.id + " ";
-	    if (this.opinionated) op += "Y";
-	    else op += "N";
+	    if (this.opinionated) op += "1";
+	    else op += "0";
 	    op += getFeatureString();
 	    
 //	    primary sentiment

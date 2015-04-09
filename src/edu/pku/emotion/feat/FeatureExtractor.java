@@ -26,6 +26,7 @@ public class FeatureExtractor {
 //      THIS IS THE ONLY POSITION THAT SHOULD BE MODIFIED!        
 //        registerExtractor(new RAEFeatureExtractor());
         registerExtractor(new LengthFeatureExtractor());
+        registerExtractor(new LexicalFeatureExtractor());
         return;
     }
     
