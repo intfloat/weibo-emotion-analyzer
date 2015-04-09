@@ -98,7 +98,7 @@ public class Sentence {
 	    sent1 += getFeatureString();
 	    
 //	    secondary sentiment
-	    String sent2 = "SSID:" + this.id + " ";
+	    String sent2 = "SPID:" + this.id + " ";
 	    sent2 += LabelMap.getIndex(Category.getEmotionString(emotionType2));
 	    sent2 += getFeatureString();
 	    

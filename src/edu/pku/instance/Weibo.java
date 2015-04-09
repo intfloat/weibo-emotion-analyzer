@@ -62,7 +62,7 @@ public class Weibo {
         sent1 += getFeatureString();
         
 //      secondary sentiment
-        String sent2 = "WSID:" + this.weiboId + " ";
+        String sent2 = "WPID:" + this.weiboId + " ";
         sent2 += LabelMap.getIndex(Category.getEmotionString(weiboEmotionType2));
         sent2 += getFeatureString();
         
