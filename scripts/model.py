@@ -2,6 +2,7 @@
 Author: intfloat@pku.edu.cn, labyrinth@pku.edu.cn
 '''
 import argparse
+from sys import stdout
 from sklearn.ensemble import GradientBoostingClassifier as GBDT
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import classification_report
@@ -49,19 +50,22 @@ if __name__ == '__main__':
     parser.add_argument('multilabel', help = 'whether this is a multilabel classification problem')
     options = parser.parse_args()
     print options
-    multilabel = int(options.multilabel)
+    stdout.flush()
+    multilabel = int(options.multilabel)    
     
     x_train, y_train = load_data(options.train)    
     x_test, y_test = load_data(options.test)
     print 'Number of labels:', max(y_train) + 1
     print 'Number of training examples:', len(x_train)
-    print 'Number of test exampples:', len(x_test) 
+    print 'Number of test exampples:', len(x_test)
+    stdout.flush()
 
     vectorizer = DictVectorizer()
     x_train = vectorizer.fit_transform(x_train).toarray()
     print 'Dimension of feature vector:', len(x_train[0])
     clf = GBDT()
     print 'Start to train...'
+    stdout.flush()
     clf.fit(x_train, y_train)
     print 'Finish training, start to predict...'
 
@@ -88,4 +92,5 @@ if __name__ == '__main__':
         evaluate(y_test, y_pred)
 
     print 'Done.'
+    stdout.flush()
 
