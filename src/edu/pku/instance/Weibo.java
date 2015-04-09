@@ -3,7 +3,9 @@ package edu.pku.instance;
 import java.util.ArrayList;
 
 import edu.pku.emotion.feat.Feature;
+import edu.pku.emotion.feat.FeatureMap;
 import edu.pku.emotion.feat.LabelMap;
+import edu.pku.emotion.util.IOUtils;
 
 /**
  * 
@@ -19,6 +21,7 @@ public class Weibo {
     private int weiboEmotionType2;
     private float[] embedding;
     private ArrayList<Feature> features;
+    private static final int mincount = Integer.parseInt(IOUtils.getConfValue(IOUtils.MINCOUNT));
     
     /**
      * 
@@ -72,7 +75,8 @@ public class Weibo {
     private String getFeatureString() {
         String res = "";
         for (Feature feature : this.features) {
-            res += " " + feature.getIndex() + ":" + feature.getValue();
+            if (FeatureMap.getFeatureFrequency(feature) >= mincount)
+                res += " " + feature.getIndex() + ":" + feature.getValue();
         }
         return res;
     }

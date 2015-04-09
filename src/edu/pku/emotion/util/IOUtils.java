@@ -28,6 +28,7 @@ public class IOUtils {
     public static final String testClass = "test_classification";
     public static final String trainExpression = "train_expression";
     public static final String testExpression = "test_expression";
+    public static final String MINCOUNT = "mincount";
     public static final String HOST = "162.105.80.102";
     public static final int PORT = 6789;
     private static HashMap<String, String> conf = null;
@@ -201,13 +202,16 @@ public class IOUtils {
     /**
      * 
      * @param key
-     * @return
-     * @throws Exception
+     * @return     
      */
-    public static String getConfValue(String key) throws Exception {
-        if (conf == null) loadConf();
-        if (!conf.containsKey(key))
-            throw new Exception("Can not find key: " + key);
+    public static String getConfValue(String key){
+        if (conf == null)
+            try {
+                loadConf();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         return conf.get(key);
     }
     
