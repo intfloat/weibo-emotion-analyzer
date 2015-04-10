@@ -1,8 +1,10 @@
 package edu.pku.emotion.feat;
 
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import edu.pku.emotion.util.DicModel;
 import edu.pku.emotion.util.IOUtils;
 import edu.pku.instance.Sentence;
 import edu.pku.instance.Weibo;
@@ -15,37 +17,98 @@ import edu.pku.instance.Weibo;
  */
 public class LexicalFeatureExtractor implements FeatureExtractorInterface {
 
+	private static final String BagOfWord_ = "BagOfWord_";  
+	private static final String EmotionWord_="EmotionWord_";
     @Override
     public void extract(Weibo weibo, List<Feature> features) {
         // TODO Auto-generated method stub
-        String[] words = IOUtils.getSegmentedCharacters(weibo.getWeiboText()).split("\\s++");
-        this.addBOWFeatures(words, features);
-        return;
+    	 if(weibo.getSeggedText()==null||weibo.getSeggedText().size()==0)
+    	 {
+             weibo.getSeggedText();
+         }
+    	 ArrayList<String> wordList=DicModel.loadWordList();
+    	 ArrayList<String> emotionList=DicModel.loadEmotionList();
+    	 int BagOfWord[]=new int[wordList.size()];
+    	 for(int i=0;i<wordList.size();i++)
+    		 BagOfWord[i]=0; 
+    	 int Emotion[]=new int[emotionList.size()];
+    	 for(int i=0;i<Emotion.length;i++)
+    		 Emotion[i]=0;
+    	 for(String w:weibo.getSeggedText())
+    	 {
+    		 for(int i=0;i<wordList.size();i++)
+    		 {
+    			 if(w.equals(wordList.get(i)))
+    			 {
+    				 if(BagOfWord[i]==0)
+    					 BagOfWord[i]=1;
+    			 }
+    		 }
+    		 for(int i=0;i<emotionList.size();i++)
+    		 {
+    			 if(w.equals(wordList.get(i)))
+    			 {
+    				 if(Emotion[i]==0)
+    					 Emotion[i]=1;
+    			 }
+    		 }
+    	 }
+    	 
+    	 for(int i=0;i<BagOfWord.length;i++)
+    	 {
+    		 features.add(new Feature(BagOfWord_+i,BagOfWord[i]));
+    	 }
+    	 for(int i=0;i<Emotion.length;i++)
+    	 {
+    		 features.add(new Feature(EmotionWord_+i,Emotion[i]));
+    	 }
+         return;   
     }
 
     @Override
     public void extract(Sentence sentence, List<Feature> features) {
         // TODO Auto-generated method stub
-        String[] words = IOUtils.getSegmentedCharacters(sentence.getText()).split("\\s++");
-        this.addBOWFeatures(words, features);
-        return;
-    }
-    
-    /**
-     * 
-     * @param words
-     * @param features
-     */
-    private void addBOWFeatures(String[] words, List<Feature> features) {
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        for (String s : words) {
-            if (map.containsKey(s)) map.put(s, map.get(s) + 1);
-            else map.put(s, 1);
-        }
-        for (String key : map.keySet()) {
-            features.add(new Feature(key, map.get(key)));
-        }
-        return;
+    	 if(sentence.getSeggedText()==null||sentence.getSeggedText().size()==0)
+    	 {
+             sentence.getSeggedText();
+         }
+    	 ArrayList<String> wordList=DicModel.loadWordList();
+    	 ArrayList<String> emotionList=DicModel.loadEmotionList();
+    	 int BagOfWord[]=new int[wordList.size()];
+    	 for(int i=0;i<wordList.size();i++)
+    		 BagOfWord[i]=0; 
+    	 int Emotion[]=new int[emotionList.size()];
+    	 for(int i=0;i<Emotion.length;i++)
+    		 Emotion[i]=0;
+    	 for(String w:sentence.getSeggedText())
+    	 {
+    		 for(int i=0;i<wordList.size();i++)
+    		 {
+    			 if(w.equals(wordList.get(i)))
+    			 {
+    				 if(BagOfWord[i]==0)
+    					 BagOfWord[i]=1;
+    			 }
+    		 }
+    		 for(int i=0;i<emotionList.size();i++)
+    		 {
+    			 if(w.equals(wordList.get(i)))
+    			 {
+    				 if(Emotion[i]==0)
+    					 Emotion[i]=1;
+    			 }
+    		 }
+    	 }
+    	 
+    	 for(int i=0;i<BagOfWord.length;i++)
+    	 {
+    		 features.add(new Feature(BagOfWord_+i,BagOfWord[i]));
+    	 }
+    	 for(int i=0;i<Emotion.length;i++)
+    	 {
+    		 features.add(new Feature(EmotionWord_+i,Emotion[i]));
+    	 }
+         return;   
     }
 
 }

@@ -1,11 +1,17 @@
 package edu.pku.instance;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import edu.pku.emotion.feat.Feature;
-import edu.pku.emotion.feat.FeatureMap;
 import edu.pku.emotion.feat.LabelMap;
-import edu.pku.emotion.util.IOUtils;
+import edu.pku.emotion.util.DicModel;
+import edu.stanford.nlp.ie.crf.CRFClassifier;
+import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
+import edu.stanford.nlp.trees.Tree;
+import edu.stanford.nlp.trees.TypedDependency;
+import edu.stanford.nlp.trees.international.pennchinese.ChineseGrammaticalStructure;
 
 /**
  * 
@@ -23,9 +29,11 @@ public class Sentence {
 	private int emotionType1;
 	private int emotionType2;
 	private String text;
+	private String segtext;
 	private float[] embedding;
+	private List<String> seggedText;
+	private Collection<TypedDependency> parseResult;
 	private ArrayList<Feature> features;
-	private static final int mincount = Integer.parseInt(IOUtils.getConfValue(IOUtils.MINCOUNT));
 	
 	/**
 	 * 
@@ -44,6 +52,8 @@ public class Sentence {
 	   this.keyExpression = expression;
 	   this.text = text;
 	   this.features = new ArrayList<Feature>();
+	   this.parseResult=null;
+	   this.seggedText=null;
 	}
 	
 	/**
@@ -62,6 +72,10 @@ public class Sentence {
 	    this.keyExpression = expression;
 	    this.text = text;
 	    this.features = new ArrayList<Feature>();
+	    this.parseResult=null;
+		this.seggedText=null;
+		setSegment();
+		setParse();
 	}
 	
 	/**
@@ -75,47 +89,57 @@ public class Sentence {
         this.emotionType1 = this.emotionType2 = -1;
         this.keyExpression = null;
         this.features = new ArrayList<Feature>();
+        this.parseResult=null;
+        this.seggedText=null;
+        setSegment();
+		setParse();
     }
 	
 	/**
-	 * Dump sentence to a string, for opinion classification & multi label
-	 * sentiment classification, a sentence could produce three lines,
-	 * for example: <br>
+	 * Dump sentence to a string, for example:
+	 * SID:3 N_LIKE_DISGUST 1:2.0 3:0.23
 	 * 
-	 * OSID:1 Y 0:12 4:0.3
-	 * SID:1 DISGUST 0:12 4:0.3
-	 * EID:1 NONE 0:12 4:0.3
-	 * 
-	 * <br> basic idea is to construct multiple instance for multi label classification
 	 * @return
 	 */
 	public String dump() {
-	    String op = "SOID:" + this.id + " ";
-	    if (this.opinionated) op += "1";
-	    else op += "0";
-	    op += getFeatureString();
-	    
-//	    primary sentiment
-	    String sent1 = "SPID:" + this.id + " ";
-	    sent1 += LabelMap.getIndex(Category.getEmotionString(emotionType1));
-	    sent1 += getFeatureString();
-	    
-//	    secondary sentiment
-	    String sent2 = "SPID:" + this.id + " ";
-	    sent2 += LabelMap.getIndex(Category.getEmotionString(emotionType2));
-	    sent2 += getFeatureString();
-	    
-	    return op + "\n" + sent1 + "\n" + sent2;
+	    String res = "SID:" + this.id;
+	    res += " " + LabelMap.getIndex(getLabel());
+	    for (Feature feature : this.features) {
+	        res += " " + feature.getIndex() + ":" + feature.getValue();
+	    }
+	    return res;
 	}
 	
-	private String getFeatureString() {
-	    String res = "";
-	    for (Feature feature : this.features) {
-	        if (FeatureMap.getFeatureFrequency(feature) >= mincount)
-	            res += " " + feature.getIndex() + ":" + feature.getValue();
-        }
-	    return res;
-	}	
+	public void setSegment(){
+		 CRFClassifier classifier=DicModel.loadSegment();
+		 System.out.println(text);
+		 seggedText=classifier.segmentString(text);
+		 StringBuffer sb=new StringBuffer();
+		 for(String w:seggedText)
+		 {
+			 sb.append(w+" ");
+		 }
+		 segtext=sb.toString();
+	}
+	public void setParse(){
+		LexicalizedParser lp=DicModel.loadParser();
+		Tree t = lp.parse(segtext);   
+	    ChineseGrammaticalStructure gs = new ChineseGrammaticalStructure(t);  
+	    parseResult = gs.typedDependenciesCollapsed();  
+	}
+	private String getLabel() {
+	    String label = "";
+	    if (this.opinionated) label = "Y";
+	    else label = "N";
+	    try {
+            label += "_" + Category.getEmotionString(emotionType1);
+            label += "_" + Category.getEmotionString(emotionType2);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }	    
+	    return label;
+	}
 	
 	@Override
 	public String toString() {
@@ -176,7 +200,12 @@ public class Sentence {
     public float[] getEmbedding() {
         return embedding;
     }
-
+    public List<String> getSeggedText(){
+    	return seggedText;
+    }
+    public Collection<TypedDependency> getParseResult(){
+    	return parseResult;
+    }
     public void setEmbedding(float[] embedding) {
         this.embedding = embedding;
     }
@@ -184,8 +213,7 @@ public class Sentence {
     public ArrayList<Feature> getFeatures() {
         return features;
     }
-
     public void setFeatures(ArrayList<Feature> features) {
         this.features = features;
-    }
+    } 
 }

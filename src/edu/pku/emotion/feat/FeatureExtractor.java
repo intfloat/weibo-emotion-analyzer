@@ -24,9 +24,10 @@ public class FeatureExtractor {
      */
     private static void setup() {
 //      THIS IS THE ONLY POSITION THAT SHOULD BE MODIFIED!        
-//        registerExtractor(new RAEFeatureExtractor());
+      //  registerExtractor(new RAEFeatureExtractor());
         registerExtractor(new LengthFeatureExtractor());
         registerExtractor(new LexicalFeatureExtractor());
+        registerExtractor(new SyntacticFeatureExtractor()); 
         return;
     }
     

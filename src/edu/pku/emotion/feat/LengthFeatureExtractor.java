@@ -15,15 +15,12 @@ public class LengthFeatureExtractor implements FeatureExtractorInterface {
     
     private static final String NUMBER_OF_SENTENCE = "number_of_sentence";
     private static final String NUMBER_OF_CHAR = "number_of_char";
-    private static final String WEIBO = "weibo";
-    private static final String SENTENCE = "sentence";
 
     @Override
     public void extract(Weibo weibo, List<Feature> features) {
         // TODO Auto-generated method stub
         features.add(new Feature(NUMBER_OF_SENTENCE, weibo.getSentences().size()));
         features.add(new Feature(NUMBER_OF_CHAR, weibo.getWeiboText().length()));
-        features.add(new Feature(WEIBO));
         return;
     }
 
@@ -31,7 +28,6 @@ public class LengthFeatureExtractor implements FeatureExtractorInterface {
     public void extract(Sentence sentence, List<Feature> features) {
         // TODO Auto-generated method stub
         features.add(new Feature(NUMBER_OF_CHAR, sentence.getText().length()));
-        features.add(new Feature(SENTENCE));
         return;
     }
 

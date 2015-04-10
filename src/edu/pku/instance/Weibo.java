@@ -1,11 +1,12 @@
 package edu.pku.instance;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import edu.pku.emotion.feat.Feature;
-import edu.pku.emotion.feat.FeatureMap;
 import edu.pku.emotion.feat.LabelMap;
-import edu.pku.emotion.util.IOUtils;
+import edu.stanford.nlp.trees.TypedDependency;
 
 /**
  * 
@@ -20,8 +21,9 @@ public class Weibo {
     private int weiboEmotionType1;
     private int weiboEmotionType2;
     private float[] embedding;
+    private List<String> seggedText;
+	private Collection<TypedDependency> parseResult;
     private ArrayList<Feature> features;
-    private static final int mincount = Integer.parseInt(IOUtils.getConfValue(IOUtils.MINCOUNT));
     
     /**
      * 
@@ -38,6 +40,9 @@ public class Weibo {
         else this.weiboEmotionType2 = Category.getEmotionIndex(emotion2);
         this.sentences = new ArrayList<Sentence>();
         this.features = new ArrayList<Feature>();
+        this.seggedText=null;
+        this.parseResult=null;
+        
     }
     
     /**
@@ -52,34 +57,38 @@ public class Weibo {
         this.weiboEmotionType2 = emotion2;
         this.sentences = new ArrayList<Sentence>();
         this.features = new ArrayList<Feature>();
+        this.seggedText=null;
+        this.parseResult=null;
     }
     
     /**
-     * Dump string representation of current weibo
+     * Dump string representation of current weibo, for example:<br>
+     * ID:2 HAPPINESS_ANGER 2:0.4 4:0.23
+     * 
      * @return
      */
     public String dump() {
-//      primary sentiment
-        String sent1 = "WPID:" + this.weiboId + " ";
-        sent1 += LabelMap.getIndex(Category.getEmotionString(weiboEmotionType1));
-        sent1 += getFeatureString();
-        
-//      secondary sentiment
-        String sent2 = "WPID:" + this.weiboId + " ";
-        sent2 += LabelMap.getIndex(Category.getEmotionString(weiboEmotionType2));
-        sent2 += getFeatureString();
-        
-        return sent1 + "\n" + sent2;
-    }
-    
-    private String getFeatureString() {
-        String res = "";
+        String res = "ID:" + this.weiboId;
+        res += " " + LabelMap.getIndex(getLabel());
+//      conform to LibSVM & XGBoost format
         for (Feature feature : this.features) {
-            if (FeatureMap.getFeatureFrequency(feature) >= mincount)
-                res += " " + feature.getIndex() + ":" + feature.getValue();
+            res += " " + feature.getIndex() + ":" + feature.getValue();
         }
         return res;
     }
+    
+    private String getLabel() {
+        String label = "";
+        try {
+            label = Category.getEmotionString(this.weiboEmotionType1);
+            label += "_" + Category.getEmotionString(this.weiboEmotionType2);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }        
+        return label;
+    }
+    
     
     /**
      * 
@@ -99,7 +108,29 @@ public class Weibo {
         }
         return res;
     }
-    
+    public List<String> getSeggedText() {
+    	if(this.sentences==null) return null;
+    	List<String> res=this.sentences.get(0).getSeggedText();
+    	for(int i=1;i<this.sentences.size();i++)
+    	{
+    		 List<String> temp=this.sentences.get(i).getSeggedText();
+    		 for(String s:temp)
+    		 {
+    			 res.add(s);
+    		 }
+    	}
+    	return res;	
+    }
+    public Collection<TypedDependency> getParseResult(){
+    	if(this.sentences==null) return null;
+    	Collection<TypedDependency>res =this.sentences.get(0).getParseResult();
+    	for(int i=1;i<this.sentences.size();i++)
+    	{
+    		Collection<TypedDependency>temp=this.sentences.get(i).getParseResult();
+    		res.addAll(temp);
+    	}
+    	return res;
+    }
     @Override
     public String toString() {
         String res = null;
@@ -155,6 +186,7 @@ public class Weibo {
     public void setEmbedding(float[] embedding) {
         this.embedding = embedding;
     }
+   // public void setBagOfWord(String[] )
 
     public ArrayList<Feature> getFeatures() {
         return features;
@@ -163,6 +195,5 @@ public class Weibo {
     public void setFeatures(ArrayList<Feature> features) {
         this.features = features;
     }
-    
 
 }
