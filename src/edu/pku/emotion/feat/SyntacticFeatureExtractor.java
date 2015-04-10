@@ -35,17 +35,16 @@ public class SyntacticFeatureExtractor implements FeatureExtractorInterface {
     			if(s.contains(Relation[i]))
     			{
     				String[] temp=s.split(",");
+    				if(temp.length!=2) continue;
     				temp[0]=getWord(temp[0]);
     				temp[1]=getWord(temp[1]);
-    				for(int j=0;j<wordList.size();j++)
-    				{
-    					if(wordList.get(j).contains(temp[0])||wordList.get(j).contains(temp[1]))
-    					{
-    						 if(ParseWord[i]==0)
-    	    					 ParseWord[i]=1;
-    					}
-    				}
-    				
+    				if(temp[0]==null||temp[1]==null) continue;
+    				int index=wordList.indexOf(temp[0]);
+    				if(index>0&&ParseWord[i]==0)
+    					ParseWord[i]=1;
+    				index=wordList.indexOf(temp[1]);
+    				if(index>0&&ParseWord[i]==0)
+    					ParseWord[i]=1;
     			}
     		}
     	}
@@ -91,16 +90,16 @@ public class SyntacticFeatureExtractor implements FeatureExtractorInterface {
     			if(s.contains(Relation[i]))
     			{
     				String[] temp=s.split(",");
+    				if(temp.length!=2) continue;
     				temp[0]=getWord(temp[0]);
     				temp[1]=getWord(temp[1]);
-    				for(int j=0;j<wordList.size();j++)
-    				{
-    					if(wordList.get(j).contains(temp[0])||wordList.get(j).contains(temp[1]))
-    					{
-    						 if(ParseWord[i]==0)
-    	    					 ParseWord[i]=1;
-    					}
-    				}
+    				if(temp[0]==null||temp[1]==null) continue;
+    				int index=wordList.indexOf(temp[0]);
+    				if(index>0&&ParseWord[i]==0)
+    					ParseWord[i]=1;
+    				index=wordList.indexOf(temp[1]);
+    				if(index>0&&ParseWord[i]==0)
+    					ParseWord[i]=1;
     				
     			}
     		}

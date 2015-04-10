@@ -31,7 +31,7 @@ public class Sentence {
 	private String text;
 	private String segtext;
 	private float[] embedding;
-	private List<String> seggedText;
+	private ArrayList<String> seggedText;
 	private Collection<TypedDependency> parseResult;
 	private ArrayList<Feature> features;
 	
@@ -73,9 +73,9 @@ public class Sentence {
 	    this.text = text;
 	    this.features = new ArrayList<Feature>();
 	    this.parseResult=null;
-		this.seggedText=null;
+		this.seggedText=new ArrayList<String>();
 		setSegment();
-		setParse();
+	//	setParse();
 	}
 	
 	/**
@@ -90,9 +90,9 @@ public class Sentence {
         this.keyExpression = null;
         this.features = new ArrayList<Feature>();
         this.parseResult=null;
-        this.seggedText=null;
+        this.seggedText=new ArrayList<String>();
         setSegment();
-		setParse();
+		//setParse();
     }
 	
 	/**
@@ -113,7 +113,7 @@ public class Sentence {
 	public void setSegment(){
 		 CRFClassifier classifier=DicModel.loadSegment();
 		 System.out.println(text);
-		 seggedText=classifier.segmentString(text);
+		 seggedText.addAll(classifier.segmentString(text));
 		 StringBuffer sb=new StringBuffer();
 		 for(String w:seggedText)
 		 {
@@ -200,7 +200,7 @@ public class Sentence {
     public float[] getEmbedding() {
         return embedding;
     }
-    public List<String> getSeggedText(){
+    public ArrayList<String> getSeggedText(){
     	return seggedText;
     }
     public Collection<TypedDependency> getParseResult(){

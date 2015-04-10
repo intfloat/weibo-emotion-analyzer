@@ -35,7 +35,7 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {        
     	 System.err.println("Start to load segment model");
-         DicModel a=new DicModel();
+         DicModel a=new DicModel("load");
     	System.err.println("Start to load data from: " + IOUtils.getConfValue(IOUtils.trainClass));        
         ArrayList<Weibo> train_data = IOUtils.loadClassTrainData();
         System.err.println("Start to load data from: " + IOUtils.getConfValue(IOUtils.testClass));

@@ -21,7 +21,7 @@ public class Weibo {
     private int weiboEmotionType1;
     private int weiboEmotionType2;
     private float[] embedding;
-    private List<String> seggedText;
+    private ArrayList<String> seggedText;
 	private Collection<TypedDependency> parseResult;
     private ArrayList<Feature> features;
     
@@ -57,7 +57,7 @@ public class Weibo {
         this.weiboEmotionType2 = emotion2;
         this.sentences = new ArrayList<Sentence>();
         this.features = new ArrayList<Feature>();
-        this.seggedText=null;
+        this.seggedText=new ArrayList<String>();
         this.parseResult=null;
     }
     
@@ -108,12 +108,14 @@ public class Weibo {
         }
         return res;
     }
-    public List<String> getSeggedText() {
+    public ArrayList<String> getSeggedText() {
     	if(this.sentences==null) return null;
-    	List<String> res=this.sentences.get(0).getSeggedText();
+    	ArrayList<String> res=this.sentences.get(0).getSeggedText();
+    	if(res==null) return null;
     	for(int i=1;i<this.sentences.size();i++)
     	{
     		 List<String> temp=this.sentences.get(i).getSeggedText();
+    		 if(temp==null) continue;
     		 for(String s:temp)
     		 {
     			 res.add(s);
@@ -124,9 +126,11 @@ public class Weibo {
     public Collection<TypedDependency> getParseResult(){
     	if(this.sentences==null) return null;
     	Collection<TypedDependency>res =this.sentences.get(0).getParseResult();
+    	if(res==null) return null;
     	for(int i=1;i<this.sentences.size();i++)
     	{
     		Collection<TypedDependency>temp=this.sentences.get(i).getParseResult();
+    		if(temp==null) continue;
     		res.addAll(temp);
     	}
     	return res;

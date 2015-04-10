@@ -24,7 +24,8 @@ public class LexicalFeatureExtractor implements FeatureExtractorInterface {
         // TODO Auto-generated method stub
     	 if(weibo.getSeggedText()==null||weibo.getSeggedText().size()==0)
     	 {
-             weibo.getSeggedText();
+    		 return;
+            // weibo.getSeggedText();
          }
     	 ArrayList<String> wordList=DicModel.loadWordList();
     	 ArrayList<String> emotionList=DicModel.loadEmotionList();
@@ -36,22 +37,18 @@ public class LexicalFeatureExtractor implements FeatureExtractorInterface {
     		 Emotion[i]=0;
     	 for(String w:weibo.getSeggedText())
     	 {
-    		 for(int i=0;i<wordList.size();i++)
-    		 {
-    			 if(w.equals(wordList.get(i)))
-    			 {
-    				 if(BagOfWord[i]==0)
-    					 BagOfWord[i]=1;
-    			 }
-    		 }
-    		 for(int i=0;i<emotionList.size();i++)
-    		 {
-    			 if(w.equals(wordList.get(i)))
-    			 {
-    				 if(Emotion[i]==0)
-    					 Emotion[i]=1;
-    			 }
-    		 }
+    		 int index=wordList.indexOf(w);
+			 if(index>0)
+			 {
+				 if(BagOfWord[index]==0)
+					 BagOfWord[index]=1;
+			 }
+    		 int index_e=emotionList.indexOf(w);
+			 if(index_e>0)
+			 {
+				 if(Emotion[index_e]==0)
+					 Emotion[index_e]=1;
+			 }
     	 }
     	 
     	 for(int i=0;i<BagOfWord.length;i++)
@@ -70,7 +67,8 @@ public class LexicalFeatureExtractor implements FeatureExtractorInterface {
         // TODO Auto-generated method stub
     	 if(sentence.getSeggedText()==null||sentence.getSeggedText().size()==0)
     	 {
-             sentence.getSeggedText();
+    		 return;
+            // sentence.getSeggedText();
          }
     	 ArrayList<String> wordList=DicModel.loadWordList();
     	 ArrayList<String> emotionList=DicModel.loadEmotionList();
@@ -82,22 +80,19 @@ public class LexicalFeatureExtractor implements FeatureExtractorInterface {
     		 Emotion[i]=0;
     	 for(String w:sentence.getSeggedText())
     	 {
-    		 for(int i=0;i<wordList.size();i++)
-    		 {
-    			 if(w.equals(wordList.get(i)))
-    			 {
-    				 if(BagOfWord[i]==0)
-    					 BagOfWord[i]=1;
-    			 }
-    		 }
-    		 for(int i=0;i<emotionList.size();i++)
-    		 {
-    			 if(w.equals(wordList.get(i)))
-    			 {
-    				 if(Emotion[i]==0)
-    					 Emotion[i]=1;
-    			 }
-    		 }
+    		 System.out.print(""+w+" ");
+    		 int index=wordList.indexOf(w);
+			 if(index>0)
+			 {
+				 if(BagOfWord[index]==0)
+					 BagOfWord[index]=1;
+			 }
+    		 int index_e=emotionList.indexOf(w);
+			 if(index_e>0)
+			 {
+				 if(Emotion[index_e]==0)
+					 Emotion[index_e]=1;
+			 }
     	 }
     	 
     	 for(int i=0;i<BagOfWord.length;i++)
