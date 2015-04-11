@@ -2,6 +2,8 @@ package edu.pku.instance;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import edu.pku.Main;
 import edu.pku.emotion.feat.Feature;
 import edu.pku.emotion.feat.FeatureMap;
 import edu.pku.emotion.feat.LabelMap;
@@ -76,8 +78,10 @@ public class Weibo {
     private String getFeatureString() {
         String res = "";
         for (Feature feature : this.features) {
-            if (FeatureMap.getFeatureFrequency(feature) >= mincount)
-                res += " " + feature + ":" + feature.getValue();
+            if (FeatureMap.getFeatureFrequency(feature) >= mincount) {
+                if (Main.DEBUGMODE) res += " " + feature.getDesc() + ":" + feature.getValue();
+                else res += " " + feature.getIndex() + ":" + feature.getValue();
+            }
         }
         return res;
     }
