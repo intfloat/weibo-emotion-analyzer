@@ -24,6 +24,8 @@
 
 [theano](https://github.com/Theano/Theano)
 
+[Stanford CoreNLP](https://github.com/stanfordnlp/CoreNLP)
+
 # 相同数据集上的tutorial
 
 NLPCC14上有几个ppt：
@@ -42,6 +44,6 @@ NLPCC14上有几个ppt：
 
 # contributors
 
-[王亮](weibo.com/intfloat)
+[王亮](intfloat@pku.edu.cn)
 
-[王异秀]()
+[王异秀](labyrinth@pku.edu.cn)
