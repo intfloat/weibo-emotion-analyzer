@@ -3,6 +3,7 @@ package edu.pku.emotion.util;
 import java.util.HashSet;
 import java.util.Properties;
 
+import edu.pku.Main;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 
@@ -39,11 +40,13 @@ public class DicModel {
 	public void setEmotionlist() throws Exception
 	{
 		emotionList = new HashSet<String>(IOUtils.loadEmotionWord());
-		int cnt = 0;
-		for (String s : emotionList) {
-		    if (cnt > 10) break;
-		    System.err.println(s);
-		    cnt++;
+		if (Main.DEBUGMODE) {
+    		int cnt = 0;
+    		for (String s : emotionList) {
+    		    if (cnt > 10) break;
+    		    System.err.println(s);
+    		    cnt++;
+    		}
 		}
 	}
 	
