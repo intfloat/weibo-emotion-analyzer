@@ -12,15 +12,13 @@ import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
  * @author labyrinth@pku.edu.cn, intfloat@pku.edu.cn
  *
  */
-public class DicModel {
-	private static HashSet<String> wordList;
+public class DicModel {	
 	private static HashSet<String> emotionList;
 	private static CRFClassifier segmentor;
 	private static LexicalizedParser lp;
 	
 	public DicModel(String word) throws Exception
-	{
-		setWordlist();
+	{		
 		setEmotionlist();
 		setSegmentor();
 		setParser();	
@@ -30,12 +28,7 @@ public class DicModel {
 	{
 		setSegmentor();
 		setParser();
-	}
-	
-	private void setWordlist() throws Exception
-	{
-		wordList = new HashSet<String>(IOUtils.loadWordList());
-	}
+	}	
 	
 	public void setEmotionlist() throws Exception
 	{
@@ -68,11 +61,6 @@ public class DicModel {
 //		String grammars = "edu/stanford/nlp/models/lexparser/chinesePCFG.ser.gz";  
 //		lp = LexicalizedParser.loadModel(grammars);  
 	    return;
-	}
-	
-	public static HashSet<String> loadWordList()
-	{
-		return wordList;
 	}
 	
 	public static HashSet<String> loadEmotionList()

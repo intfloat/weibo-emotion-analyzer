@@ -56,11 +56,7 @@ public class IOUtils {
     public static ArrayList<Weibo> loadExpressionTestData() throws Exception {
         if (conf == null) loadConf();        
         return XMLUtils.readXML(new File(conf.get(testExpression)));
-    }
-    
-    public static ArrayList<String> loadWordList() throws Exception {
-    	return FileUtils.readFile(WordList);
-    }
+    }   
     
     public static ArrayList<String> loadEmotionWord() throws Exception {
     	return FileUtils.readFile(EmotionWord);
