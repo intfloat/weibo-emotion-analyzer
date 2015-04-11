@@ -20,6 +20,7 @@ public class Main {
     private static final String trainClassIns = "data/train_class.txt";
     private static final String testClassIns = "data/test_class.txt";
     private static final String labelMapping = "data/label.map";
+    public static final boolean DEBUGMODE = true;
 //    private static final String trainExpressionIns = "data/train_expression.txt";
 //    private static final String testExpressionIns = "data/test_expression.txt";
     

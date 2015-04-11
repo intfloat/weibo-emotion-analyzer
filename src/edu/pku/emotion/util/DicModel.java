@@ -39,6 +39,12 @@ public class DicModel {
 	public void setEmotionlist() throws Exception
 	{
 		emotionList = new HashSet<String>(IOUtils.loadEmotionWord());
+		int cnt = 0;
+		for (String s : emotionList) {
+		    if (cnt > 10) break;
+		    System.err.println(s);
+		    cnt++;
+		}
 	}
 	
 	public void setSegmentor()
