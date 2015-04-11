@@ -32,6 +32,7 @@ public class Weibo {
      * @param emotion1
      * @param emotion2
      * @throws Exception
+	 *
      */
     public Weibo(int id, String emotion1, String emotion2) throws Exception {
         this.weiboId = id;
