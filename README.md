@@ -20,11 +20,11 @@
 
 [XGBoost](https://github.com/dmlc/xgboost)
 
-[jrae](https://github.com/sancha/jrae)
-
 [theano](https://github.com/Theano/Theano)
 
 [Stanford CoreNLP](https://github.com/stanfordnlp/CoreNLP)
+
+[Scikit Learn](https://github.com/scikit-learn/scikit-learn)
 
 # 相同数据集上的tutorial
 
