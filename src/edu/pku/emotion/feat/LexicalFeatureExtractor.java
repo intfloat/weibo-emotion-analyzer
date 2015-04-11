@@ -23,7 +23,7 @@ public class LexicalFeatureExtractor implements FeatureExtractorInterface {
     @Override
     public void extract(Weibo weibo, List<Feature> features) {
         // TODO Auto-generated method stub
-        assert weibo.getSeggedText() != null && !weibo.getSeggedText().isEmpty();        
+        assert weibo.getSeggedText() != null && !weibo.getSeggedText().isEmpty();
         this.addBOWFeature(weibo.getSeggedText(), features);         
         return;   
     }

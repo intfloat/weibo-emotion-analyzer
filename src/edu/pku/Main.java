@@ -20,7 +20,7 @@ public class Main {
     private static final String trainClassIns = "data/train_class.txt";
     private static final String testClassIns = "data/test_class.txt";
     private static final String labelMapping = "data/label.map";
-    public static final boolean DEBUGMODE = true;
+    public static final boolean DEBUGMODE = false;
 //    private static final String trainExpressionIns = "data/train_expression.txt";
 //    private static final String testExpressionIns = "data/test_expression.txt";
     
@@ -78,8 +78,8 @@ public class Main {
     private static void extractAndDump(ArrayList<Weibo> data, File path) {
         int cnt = 0;
         for (Weibo weibo : data) {
-            ++cnt;
-            if (cnt % 10 == 0) System.err.println("data: " + cnt);
+            ++cnt;            
+            if (cnt % 200 == 0) System.err.println("data: " + cnt);
             FeatureExtractor.extract(weibo);
         }
         IOUtils.dumpAllInstance(data, path);

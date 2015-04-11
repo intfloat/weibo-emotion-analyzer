@@ -64,8 +64,10 @@ public class DicModel {
 	
 	public void setParser()
 	{
-		String grammars = "edu/stanford/nlp/models/lexparser/chinesePCFG.ser.gz";  
-		lp = LexicalizedParser.loadModel(grammars);  
+//	    ignore syntactic features for now
+//		String grammars = "edu/stanford/nlp/models/lexparser/chinesePCFG.ser.gz";  
+//		lp = LexicalizedParser.loadModel(grammars);  
+	    return;
 	}
 	
 	public static HashSet<String> loadWordList()

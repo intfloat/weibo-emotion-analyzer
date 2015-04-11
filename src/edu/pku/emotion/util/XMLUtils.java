@@ -42,6 +42,7 @@ public class XMLUtils {
         ArrayList<Weibo> result = new ArrayList<Weibo>();
 //      for every weibo
         for (int i = 0; i < nodeList.getLength(); ++i) {
+            if (i % 200 == 0) System.err.println(i);
             Element weibo = (Element) nodeList.item(i);
             int id = Integer.parseInt(weibo.getAttribute("id"));
             String emotion1 = null;
@@ -51,7 +52,8 @@ public class XMLUtils {
             if (weibo.hasAttribute("emotion-type2"))
                 emotion2 = weibo.getAttribute("emotion-type2");
             Weibo val = new Weibo(id, emotion1, emotion2);
-            NodeList ss = weibo.getElementsByTagName("sentence");            
+            NodeList ss = weibo.getElementsByTagName("sentence");
+            assert ss.getLength() > 0;
 //          for every sentence in current weibo
             for (int j = 0; j < ss.getLength(); ++j) {
                 Element sentence = (Element) ss.item(j);

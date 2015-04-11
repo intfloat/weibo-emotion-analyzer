@@ -24,60 +24,62 @@ import edu.stanford.nlp.trees.international.pennchinese.ChineseGrammaticalStruct
  *
  */
 public class Sentence {
-    
-    private int id;
-    private boolean opinionated;
-    private String keyExpression;
-    private int emotionType1;
-    private int emotionType2;
-    private String text;
-    private String segtext;
-    private float[] embedding;
-    private ArrayList<String> seggedText;
-    private Collection<TypedDependency> parseResult;
-    private ArrayList<Feature> features;
-    private static final int mincount = Integer.parseInt(IOUtils.getConfValue(IOUtils.MINCOUNT));
-    
-    /**
-     * 
-     * @param id
-     * @param opinion
-     * @param emotion1
-     * @param emotion2
-     * @param text
-     * @throws Exception 
-     */
-    public Sentence(int id, boolean opinion, String emotion1, String emotion2, String expression, String text) throws Exception {
-       this.id = id;
-       this.opinionated = opinion;
-       this.emotionType1 = Category.getEmotionIndex(emotion1);
-       this.emotionType2 = Category.getEmotionIndex(emotion2);
-       this.keyExpression = expression;
-       this.text = text;
-       this.features = new ArrayList<Feature>();       
-       this.seggedText = new ArrayList<String>();       
-    }
-    
-    /**
-     * 
-     * @param id
-     * @param opinion
-     * @param emotion1
-     * @param emotion2
-     * @param text
-     */
-    public Sentence(int id, boolean opinion, int emotion1, int emotion2, String expression, String text) {
-        this.id = id;
-        this.opinionated = opinion;
-        this.emotionType1 = emotion1;
-        this.emotionType2 = emotion2;
-        this.keyExpression = expression;
-        this.text = text;
-        this.features = new ArrayList<Feature>();        
-        this.seggedText = new ArrayList<String>();        
-    }
-    
-    /**
+	
+	private int id;
+	private boolean opinionated;
+	private String keyExpression;
+	private int emotionType1;
+	private int emotionType2;
+	private String text;
+	private String segtext;
+	private float[] embedding;
+	private ArrayList<String> seggedText;
+	private Collection<TypedDependency> parseResult;
+	private ArrayList<Feature> features;
+	private static final int mincount = Integer.parseInt(IOUtils.getConfValue(IOUtils.MINCOUNT));
+	
+	/**
+	 * 
+	 * @param id
+	 * @param opinion
+	 * @param emotion1
+	 * @param emotion2
+	 * @param text
+	 * @throws Exception 
+	 */
+	public Sentence(int id, boolean opinion, String emotion1, String emotion2, String expression, String text) throws Exception {
+	   this.id = id;
+	   this.opinionated = opinion;
+	   this.emotionType1 = Category.getEmotionIndex(emotion1);
+	   this.emotionType2 = Category.getEmotionIndex(emotion2);
+	   this.keyExpression = expression;
+	   this.text = text;
+	   this.features = new ArrayList<Feature>();	   
+	   this.seggedText = new ArrayList<String>();
+	   this.setSegment();
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param opinion
+	 * @param emotion1
+	 * @param emotion2
+	 * @param text
+	 */
+	public Sentence(int id, boolean opinion, int emotion1, int emotion2, String expression, String text) {
+	    this.id = id;
+	    this.opinionated = opinion;
+	    this.emotionType1 = emotion1;
+	    this.emotionType2 = emotion2;
+	    this.keyExpression = expression;
+	    this.text = text;
+	    this.features = new ArrayList<Feature>();	    
+		this.seggedText = new ArrayList<String>();
+		this.setSegment();
+	}
+	
+	/**
      * 
      * @param id
      * @param text
@@ -88,9 +90,10 @@ public class Sentence {
         this.emotionType1 = this.emotionType2 = -1;
         this.keyExpression = null;
         this.features = new ArrayList<Feature>();        
-        this.seggedText = new ArrayList<String>();        
+        this.seggedText = new ArrayList<String>();
+        this.setSegment();
     }
-    
+	
     /**
      * Dump sentence to a string, for opinion classification & multi label
      * sentiment classification, a sentence could produce three lines,
@@ -132,30 +135,31 @@ public class Sentence {
         }
         return res;
     }   
-    
-    private void setSegment(){
-        CRFClassifier classifier=DicModel.loadSegment();         
-        seggedText.addAll(classifier.segmentString(text));
-        return;
-    }
-    private void setParse(){
-        if (this.segtext == null || this.segtext.length() == 0) {
-            StringBuffer sb = new StringBuffer();
+	
+	private void setSegment(){
+	    if (seggedText.size() > 0) return;
+		CRFClassifier classifier = DicModel.loadSegment();		 
+		seggedText.addAll(classifier.segmentString(text));
+		return;
+	}
+	private void setParse(){
+	    if (this.segtext == null || this.segtext.length() == 0) {
+    	    StringBuffer sb = new StringBuffer();
             for(String w : seggedText)
             {
                 sb.append(w + " ");
             }
             segtext = sb.toString();
-        }
-        LexicalizedParser lp=DicModel.loadParser();
-        Tree t = lp.parse(segtext);
-        ChineseGrammaticalStructure gs = new ChineseGrammaticalStructure(t);  
-        parseResult = gs.typedDependenciesCollapsed();
-    }    
-    
-    @Override
-    public String toString() {
-        String res = null;
+	    }
+		LexicalizedParser lp=DicModel.loadParser();
+		Tree t = lp.parse(segtext);   
+	    ChineseGrammaticalStructure gs = new ChineseGrammaticalStructure(t);  
+	    parseResult = gs.typedDependenciesCollapsed();
+	}	
+	
+	@Override
+	public String toString() {
+	    String res = null;
         try {
             res = "SentenceId: " + id + " "
                         + "Opinionated: " + this.opinionated + " ";
@@ -169,9 +173,9 @@ public class Sentence {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return res;
-    }    
-    
+	    return res;
+	}	
+	
     public int getId() {
         return id;
     }
@@ -214,10 +218,10 @@ public class Sentence {
     }
     public ArrayList<String> getSeggedText(){
         if (this.seggedText.size() == 0) this.setSegment();
-        return seggedText;
+    	return seggedText;
     }
     public Collection<TypedDependency> getParseResult(){
-        return parseResult;
+    	return parseResult;
     }
     public void setEmbedding(float[] embedding) {
         this.embedding = embedding;
