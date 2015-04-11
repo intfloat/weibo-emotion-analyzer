@@ -2,10 +2,10 @@ package edu.pku.instance;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
 import edu.pku.emotion.feat.Feature;
+import edu.pku.emotion.feat.FeatureMap;
 import edu.pku.emotion.feat.LabelMap;
+import edu.pku.emotion.util.IOUtils;
 import edu.stanford.nlp.trees.TypedDependency;
 
 /**
@@ -21,9 +21,8 @@ public class Weibo {
     private int weiboEmotionType1;
     private int weiboEmotionType2;
     private float[] embedding;
-    private ArrayList<String> seggedText;
-	private Collection<TypedDependency> parseResult;
     private ArrayList<Feature> features;
+    private static final int mincount = Integer.parseInt(IOUtils.getConfValue(IOUtils.MINCOUNT));
     
     /**
      * 
@@ -39,10 +38,7 @@ public class Weibo {
         if (emotion2 == null) this.weiboEmotionType2 = -1;
         else this.weiboEmotionType2 = Category.getEmotionIndex(emotion2);
         this.sentences = new ArrayList<Sentence>();
-        this.features = new ArrayList<Feature>();
-        this.seggedText=null;
-        this.parseResult=null;
-        
+        this.features = new ArrayList<Feature>();        
     }
     
     /**
@@ -56,37 +52,34 @@ public class Weibo {
         this.weiboEmotionType1 = emotion1;
         this.weiboEmotionType2 = emotion2;
         this.sentences = new ArrayList<Sentence>();
-        this.features = new ArrayList<Feature>();
-        this.seggedText=new ArrayList<String>();
-        this.parseResult=null;
+        this.features = new ArrayList<Feature>();        
     }
     
     /**
-     * Dump string representation of current weibo, for example:<br>
-     * ID:2 HAPPINESS_ANGER 2:0.4 4:0.23
-     * 
+     * Dump string representation of current weibo
      * @return
      */
     public String dump() {
-        String res = "ID:" + this.weiboId;
-        res += " " + LabelMap.getIndex(getLabel());
-//      conform to LibSVM & XGBoost format
-        for (Feature feature : this.features) {
-            res += " " + feature.getIndex() + ":" + feature.getValue();
-        }
-        return res;
+//      primary sentiment
+        String sent1 = "WPID:" + this.weiboId + " ";
+        sent1 += LabelMap.getIndex(Category.getEmotionString(weiboEmotionType1));
+        sent1 += getFeatureString();
+        
+//      secondary sentiment
+        String sent2 = "WPID:" + this.weiboId + " ";
+        sent2 += LabelMap.getIndex(Category.getEmotionString(weiboEmotionType2));
+        sent2 += getFeatureString();
+        
+        return sent1 + "\n" + sent2;
     }
     
-    private String getLabel() {
-        String label = "";
-        try {
-            label = Category.getEmotionString(this.weiboEmotionType1);
-            label += "_" + Category.getEmotionString(this.weiboEmotionType2);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }        
-        return label;
+    private String getFeatureString() {
+        String res = "";
+        for (Feature feature : this.features) {
+            if (FeatureMap.getFeatureFrequency(feature) >= mincount)
+                res += " " + feature + ":" + feature.getValue();
+        }
+        return res;
     }
     
     
@@ -101,40 +94,32 @@ public class Weibo {
     }
     
     public String getWeiboText() {
-        if (this.sentences == null) return "";
+        assert this.sentences != null;        
         String res = "";
         for (Sentence s : this.sentences) {
             res = res + " " + s.getText();
         }
         return res;
     }
+    
     public ArrayList<String> getSeggedText() {
-    	if(this.sentences==null) return null;
-    	ArrayList<String> res=this.sentences.get(0).getSeggedText();
-    	if(res==null) return null;
-    	for(int i=1;i<this.sentences.size();i++)
-    	{
-    		 List<String> temp=this.sentences.get(i).getSeggedText();
-    		 if(temp==null) continue;
-    		 for(String s:temp)
-    		 {
-    			 res.add(s);
-    		 }
-    	}
-    	return res;	
+        assert this.sentences != null;        
+        ArrayList<String> res = new ArrayList<String>();        
+        for(Sentence sentence : this.sentences) {
+            res.addAll(sentence.getSeggedText());
+        }
+        return res;    
     }
+    
     public Collection<TypedDependency> getParseResult(){
-    	if(this.sentences==null) return null;
-    	Collection<TypedDependency>res =this.sentences.get(0).getParseResult();
-    	if(res==null) return null;
-    	for(int i=1;i<this.sentences.size();i++)
-    	{
-    		Collection<TypedDependency>temp=this.sentences.get(i).getParseResult();
-    		if(temp==null) continue;
-    		res.addAll(temp);
-    	}
-    	return res;
+        assert this.sentences != null;
+        Collection<TypedDependency> res = new ArrayList<TypedDependency>();
+        for (Sentence sentence : this.sentences) {
+            res.addAll(sentence.getParseResult());
+        }        
+        return res;
     }
+    
     @Override
     public String toString() {
         String res = null;
@@ -190,7 +175,6 @@ public class Weibo {
     public void setEmbedding(float[] embedding) {
         this.embedding = embedding;
     }
-   // public void setBagOfWord(String[] )
 
     public ArrayList<Feature> getFeatures() {
         return features;

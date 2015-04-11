@@ -7,3 +7,16 @@ a.out
 Test.java
 words.txt
 out.*
+segment/
+*.map
+data/test_class.txt
+data/train_class.txt
+scripts/small_test.txt
+scripts/small_train.txt
+scripts/test_opinion.txt
+scripts/test_sentence.txt
+scripts/test_weibo.txt
+scripts/train_opinion.txt
+scripts/train_sentence.txt
+scripts/train_weibo.txt
+*classpath

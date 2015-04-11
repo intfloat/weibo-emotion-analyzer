@@ -2,11 +2,12 @@ package edu.pku.instance;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import edu.pku.emotion.feat.Feature;
+import edu.pku.emotion.feat.FeatureMap;
 import edu.pku.emotion.feat.LabelMap;
 import edu.pku.emotion.util.DicModel;
+import edu.pku.emotion.util.IOUtils;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 import edu.stanford.nlp.trees.Tree;
@@ -34,6 +35,7 @@ public class Sentence {
 	private ArrayList<String> seggedText;
 	private Collection<TypedDependency> parseResult;
 	private ArrayList<Feature> features;
+	private static final int mincount = Integer.parseInt(IOUtils.getConfValue(IOUtils.MINCOUNT));
 	
 	/**
 	 * 
@@ -51,9 +53,8 @@ public class Sentence {
 	   this.emotionType2 = Category.getEmotionIndex(emotion2);
 	   this.keyExpression = expression;
 	   this.text = text;
-	   this.features = new ArrayList<Feature>();
-	   this.parseResult=null;
-	   this.seggedText=null;
+	   this.features = new ArrayList<Feature>();	   
+	   this.seggedText = new ArrayList<String>();	   
 	}
 	
 	/**
@@ -71,11 +72,8 @@ public class Sentence {
 	    this.emotionType2 = emotion2;
 	    this.keyExpression = expression;
 	    this.text = text;
-	    this.features = new ArrayList<Feature>();
-	    this.parseResult=null;
-		this.seggedText=new ArrayList<String>();
-		setSegment();
-	//	setParse();
+	    this.features = new ArrayList<Feature>();	    
+		this.seggedText = new ArrayList<String>();		
 	}
 	
 	/**
@@ -88,58 +86,66 @@ public class Sentence {
         this.text = text;
         this.emotionType1 = this.emotionType2 = -1;
         this.keyExpression = null;
-        this.features = new ArrayList<Feature>();
-        this.parseResult=null;
-        this.seggedText=new ArrayList<String>();
-        setSegment();
-		//setParse();
+        this.features = new ArrayList<Feature>();        
+        this.seggedText = new ArrayList<String>();        
     }
 	
-	/**
-	 * Dump sentence to a string, for example:
-	 * SID:3 N_LIKE_DISGUST 1:2.0 3:0.23
-	 * 
-	 * @return
-	 */
-	public String dump() {
-	    String res = "SID:" + this.id;
-	    res += " " + LabelMap.getIndex(getLabel());
-	    for (Feature feature : this.features) {
-	        res += " " + feature.getIndex() + ":" + feature.getValue();
-	    }
-	    return res;
-	}
+    /**
+     * Dump sentence to a string, for opinion classification & multi label
+     * sentiment classification, a sentence could produce three lines,
+     * for example: <br>
+     * 
+     * OSID:1 Y 0:12 4:0.3
+     * SID:1 DISGUST 0:12 4:0.3
+     * EID:1 NONE 0:12 4:0.3
+     * 
+     * <br> basic idea is to construct multiple instance for multi label classification
+     * @return
+     */
+    public String dump() {
+        String op = "SOID:" + this.id + " ";
+        if (this.opinionated) op += "1";
+        else op += "0";
+        op += getFeatureString();
+        
+//      primary sentiment
+        String sent1 = "SPID:" + this.id + " ";
+        sent1 += LabelMap.getIndex(Category.getEmotionString(emotionType1));
+        sent1 += getFeatureString();
+        
+//      secondary sentiment
+        String sent2 = "SPID:" + this.id + " ";
+        sent2 += LabelMap.getIndex(Category.getEmotionString(emotionType2));
+        sent2 += getFeatureString();
+        
+        return op + "\n" + sent1 + "\n" + sent2;
+    }
+    
+    private String getFeatureString() {
+        String res = "";
+        for (Feature feature : this.features) {
+            if (FeatureMap.getFeatureFrequency(feature) >= mincount)
+                res += " " + feature + ":" + feature.getValue();
+        }
+        return res;
+    }   
 	
-	public void setSegment(){
-		 CRFClassifier classifier=DicModel.loadSegment();
-		 System.out.println(text);
+	private void setSegment(){
+		 CRFClassifier classifier=DicModel.loadSegment();		 
 		 seggedText.addAll(classifier.segmentString(text));
-		 StringBuffer sb=new StringBuffer();
-		 for(String w:seggedText)
+		 StringBuffer sb = new StringBuffer();
+		 for(String w : seggedText)
 		 {
-			 sb.append(w+" ");
+			 sb.append(w + " ");
 		 }
-		 segtext=sb.toString();
+		 segtext = sb.toString();
 	}
-	public void setParse(){
+	private void setParse(){
 		LexicalizedParser lp=DicModel.loadParser();
 		Tree t = lp.parse(segtext);   
 	    ChineseGrammaticalStructure gs = new ChineseGrammaticalStructure(t);  
 	    parseResult = gs.typedDependenciesCollapsed();  
-	}
-	private String getLabel() {
-	    String label = "";
-	    if (this.opinionated) label = "Y";
-	    else label = "N";
-	    try {
-            label += "_" + Category.getEmotionString(emotionType1);
-            label += "_" + Category.getEmotionString(emotionType2);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }	    
-	    return label;
-	}
+	}	
 	
 	@Override
 	public String toString() {
@@ -201,6 +207,7 @@ public class Sentence {
         return embedding;
     }
     public ArrayList<String> getSeggedText(){
+        if (this.seggedText.size() == 0) this.setSegment();
     	return seggedText;
     }
     public Collection<TypedDependency> getParseResult(){

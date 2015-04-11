@@ -1,16 +1,22 @@
 package edu.pku.emotion.util;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Properties;
 
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 
+/**
+ * 
+ * @author labyrinth@pku.edu.cn, intfloat@pku.edu.cn
+ *
+ */
 public class DicModel {
-	private static ArrayList<String> wordList;
-	private static ArrayList<String> emotionList;
+	private static HashSet<String> wordList;
+	private static HashSet<String> emotionList;
 	private static CRFClassifier segmentor;
 	private static LexicalizedParser lp;
+	
 	public DicModel(String word) throws Exception
 	{
 		setWordlist();
@@ -18,19 +24,23 @@ public class DicModel {
 		setSegmentor();
 		setParser();	
 	}
+	
 	public DicModel() throws Exception
 	{
 		setSegmentor();
 		setParser();
 	}
-	public void setWordlist() throws Exception
+	
+	private void setWordlist() throws Exception
 	{
-		wordList=IOUtils.loadWordList();
+		wordList = new HashSet<String>(IOUtils.loadWordList());
 	}
+	
 	public void setEmotionlist() throws Exception
 	{
-		emotionList=IOUtils.loadEmotionWord();
+		emotionList = new HashSet<String>(IOUtils.loadEmotionWord());
 	}
+	
 	public void setSegmentor()
 	{
 		Properties props = new Properties();
@@ -42,23 +52,28 @@ public class DicModel {
 		segmentor.loadClassifierNoExceptions("segment/ctb.gz", props);
 		segmentor.flags.setProperties(props);
 	}
+	
 	public void setParser()
 	{
 		String grammars = "edu/stanford/nlp/models/lexparser/chinesePCFG.ser.gz";  
 		lp = LexicalizedParser.loadModel(grammars);  
 	}
-	public static ArrayList<String> loadWordList()
+	
+	public static HashSet<String> loadWordList()
 	{
 		return wordList;
 	}
-	public static ArrayList<String> loadEmotionList()
+	
+	public static HashSet<String> loadEmotionList()
 	{
 		return emotionList;
 	}
+	
 	public static CRFClassifier loadSegment()
 	{
 		return segmentor;
 	}
+	
 	public static LexicalizedParser loadParser()
 	{
 		return lp;

@@ -5,10 +5,15 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
+/**
+ * 
+ * @author labyrinth@pku.edu.cn, intfloat@pku.edu.cn
+ *
+ */
 public class FileUtils {
 	
-	public static ArrayList<String> readFile(String path) throws Exception {
-		ArrayList<String> result=new ArrayList<String>();
+	public static ArrayList<String> readFile(String path) throws Exception {	    
+		ArrayList<String> result=new ArrayList<String>();		
 		InputStreamReader isReader =new InputStreamReader(new FileInputStream(path),"UTF-8");
 		BufferedReader reader = new BufferedReader(isReader);
 		String aline;
