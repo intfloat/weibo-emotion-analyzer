@@ -1,11 +1,11 @@
 package edu.pku.emotion.feat;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import edu.pku.emotion.util.DicModel;
-import edu.pku.emotion.util.IOUtils;
 import edu.pku.instance.Sentence;
 import edu.pku.instance.Weibo;
 
@@ -17,93 +17,47 @@ import edu.pku.instance.Weibo;
  */
 public class LexicalFeatureExtractor implements FeatureExtractorInterface {
 
-	private static final String BagOfWord_ = "BagOfWord_";  
-	private static final String EmotionWord_="EmotionWord_";
+    private static final String BagOfWord_ = "BoW_";  
+    private static final String EmotionWord_="EmoW_";    
+    
     @Override
     public void extract(Weibo weibo, List<Feature> features) {
         // TODO Auto-generated method stub
-    	 if(weibo.getSeggedText()==null||weibo.getSeggedText().size()==0)
-    	 {
-    		 return;
-            // weibo.getSeggedText();
-         }
-    	 ArrayList<String> wordList=DicModel.loadWordList();
-    	 ArrayList<String> emotionList=DicModel.loadEmotionList();
-    	 int BagOfWord[]=new int[wordList.size()];
-    	 for(int i=0;i<wordList.size();i++)
-    		 BagOfWord[i]=0; 
-    	 int Emotion[]=new int[emotionList.size()];
-    	 for(int i=0;i<Emotion.length;i++)
-    		 Emotion[i]=0;
-    	 for(String w:weibo.getSeggedText())
-    	 {
-    		 int index=wordList.indexOf(w);
-			 if(index>0)
-			 {
-				 if(BagOfWord[index]==0)
-					 BagOfWord[index]=1;
-			 }
-    		 int index_e=emotionList.indexOf(w);
-			 if(index_e>0)
-			 {
-				 if(Emotion[index_e]==0)
-					 Emotion[index_e]=1;
-			 }
-    	 }
-    	 
-    	 for(int i=0;i<BagOfWord.length;i++)
-    	 {
-    		 features.add(new Feature(BagOfWord_+i,BagOfWord[i]));
-    	 }
-    	 for(int i=0;i<Emotion.length;i++)
-    	 {
-    		 features.add(new Feature(EmotionWord_+i,Emotion[i]));
-    	 }
-         return;   
+        assert weibo.getSeggedText() != null && !weibo.getSeggedText().isEmpty();        
+        this.addBOWFeature(weibo.getSeggedText(), features);         
+        return;   
     }
 
     @Override
     public void extract(Sentence sentence, List<Feature> features) {
         // TODO Auto-generated method stub
-    	 if(sentence.getSeggedText()==null||sentence.getSeggedText().size()==0)
-    	 {
-    		 return;
-            // sentence.getSeggedText();
+        assert sentence.getSeggedText() != null && !sentence.getSeggedText().isEmpty();
+        this.addBOWFeature(sentence.getSeggedText(), features);
+        return;   
+    }
+    
+    /**
+     * 
+     * @param seggedText
+     * @param features
+     */
+    private void addBOWFeature(ArrayList<String> seggedText, List<Feature> features) {
+        HashSet<String> emotionList = DicModel.loadEmotionList();         
+        HashMap<String, Integer> counter = new HashMap<String, Integer>();
+        for(String w : seggedText) {
+            if (!counter.containsKey(w)) counter.put(w, 1);
+            else counter.put(w, counter.get(w) + 1);
+            
+//          find if this is an emotional word
+            if (emotionList.contains(w)) {
+                features.add(new Feature(EmotionWord_ + w));
+            }
          }
-    	 ArrayList<String> wordList=DicModel.loadWordList();
-    	 ArrayList<String> emotionList=DicModel.loadEmotionList();
-    	 int BagOfWord[]=new int[wordList.size()];
-    	 for(int i=0;i<wordList.size();i++)
-    		 BagOfWord[i]=0; 
-    	 int Emotion[]=new int[emotionList.size()];
-    	 for(int i=0;i<Emotion.length;i++)
-    		 Emotion[i]=0;
-    	 for(String w:sentence.getSeggedText())
-    	 {
-    		 System.out.print(""+w+" ");
-    		 int index=wordList.indexOf(w);
-			 if(index>0)
-			 {
-				 if(BagOfWord[index]==0)
-					 BagOfWord[index]=1;
-			 }
-    		 int index_e=emotionList.indexOf(w);
-			 if(index_e>0)
-			 {
-				 if(Emotion[index_e]==0)
-					 Emotion[index_e]=1;
-			 }
-    	 }
-    	 
-    	 for(int i=0;i<BagOfWord.length;i++)
-    	 {
-    		 features.add(new Feature(BagOfWord_+i,BagOfWord[i]));
-    	 }
-    	 for(int i=0;i<Emotion.length;i++)
-    	 {
-    		 features.add(new Feature(EmotionWord_+i,Emotion[i]));
-    	 }
-         return;   
+         
+         for (String key : counter.keySet()) {
+             features.add(new Feature(BagOfWord_ + key, counter.get(key)));
+         }
+         return;
     }
 
 }

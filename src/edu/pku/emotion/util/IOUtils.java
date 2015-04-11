@@ -28,6 +28,7 @@ public class IOUtils {
     public static final String testClass = "test_classification";
     public static final String trainExpression = "train_expression";
     public static final String testExpression = "test_expression";
+    public static final String MINCOUNT = "mincount";
     public static final String HOST = "162.105.80.102";
     public static final int PORT = 6789;
     public static final String WordList="data/word_list";
@@ -56,12 +57,12 @@ public class IOUtils {
         if (conf == null) loadConf();        
         return XMLUtils.readXML(new File(conf.get(testExpression)));
     }
-    public static ArrayList<String> loadWordList() throws Exception{
-    //	if (conf==null) loadConf();
+    
+    public static ArrayList<String> loadWordList() throws Exception {
     	return FileUtils.readFile(WordList);
     }
-    public static ArrayList<String> loadEmotionWord() throws Exception{
-    	//if(conf==null) loadConf();
+    
+    public static ArrayList<String> loadEmotionWord() throws Exception {
     	return FileUtils.readFile(EmotionWord);
     }
     /**
@@ -92,7 +93,7 @@ public class IOUtils {
     
     /**
      * for Chinese, text should be segmented first, such as<br>
-     * <code> getEmbedding("鎯� 缁� 涓� 绋� 瀹� 鐨� 濂� 浜� 鍟� 銆� 銆� 銆�")</code>
+     * <code> getEmbedding("情 绪 不 稳 定 的 女 人 啊 。 。 。")</code>
      * <br>for English, use space to segment words.
      * 
      * @param text 
@@ -213,10 +214,15 @@ public class IOUtils {
      * @return
      * @throws Exception
      */
-    public static String getConfValue(String key) throws Exception {
-        if (conf == null) loadConf();
-        if (!conf.containsKey(key))
-            throw new Exception("Can not find key: " + key);
+    public static String getConfValue(String key) {
+        if (conf == null) {
+            try {
+                loadConf();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         return conf.get(key);
     }
     
