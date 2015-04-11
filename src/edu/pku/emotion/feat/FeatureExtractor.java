@@ -27,6 +27,7 @@ public class FeatureExtractor {
       //  registerExtractor(new RAEFeatureExtractor());
         registerExtractor(new LengthFeatureExtractor());
         registerExtractor(new LexicalFeatureExtractor());
+        registerExtractor(new EmotionFeatureExtractor());
     //    registerExtractor(new SyntacticFeatureExtractor()); 
         return;
     }

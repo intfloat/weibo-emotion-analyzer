@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import edu.pku.emotion.util.DicModel;
+import edu.pku.emotion.util.IOUtils;
 import edu.pku.instance.Sentence;
 import edu.pku.instance.Weibo;
 
@@ -24,7 +25,7 @@ public class LexicalFeatureExtractor implements FeatureExtractorInterface {
     public void extract(Weibo weibo, List<Feature> features) {
         // TODO Auto-generated method stub
         assert weibo.getSeggedText() != null && !weibo.getSeggedText().isEmpty();
-        this.addBOWFeature(weibo.getSeggedText(), features);         
+        this.addBOWFeature(weibo.getSeggedText(), features);        
         return;   
     }
 
@@ -32,7 +33,7 @@ public class LexicalFeatureExtractor implements FeatureExtractorInterface {
     public void extract(Sentence sentence, List<Feature> features) {
         // TODO Auto-generated method stub
         assert sentence.getSeggedText() != null && !sentence.getSeggedText().isEmpty();
-        this.addBOWFeature(sentence.getSeggedText(), features);
+        this.addBOWFeature(sentence.getSeggedText(), features);        
         return;   
     }
     

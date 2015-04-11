@@ -103,11 +103,13 @@ public class IOUtils {
      * @throws IOException 
      * @throws UnknownHostException 
      */
-    public static float[] getEmbedding(String text) throws UnknownHostException, IOException {        
+    public static float[] getEmbedding(ArrayList<String> text) throws UnknownHostException, IOException {
+        String s = "";
+        for (String str : text) s += str + " ";
         clientSocket = new Socket(HOST, PORT);        
         outToServer = new DataOutputStream(clientSocket.getOutputStream());
         inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));        
-        outToServer.writeUTF(text + "\n");
+        outToServer.writeUTF(s.trim() + "\n");
         String vector = inFromServer.readLine().trim();
         String[] embedding = vector.split("\\s++");
         float[] res = new float[embedding.length];
@@ -147,7 +149,7 @@ public class IOUtils {
             for (Sentence sent : weibo.getSentences()) {
                 String text = sent.getText();
                 if (text.length() == 0) continue;
-                writer.write(getSegmentedCharacters(text));
+                for (String s : getSegmentedCharacters(text)) writer.write(s + " ");
                 writer.write("\n");
             }
         }
@@ -159,8 +161,8 @@ public class IOUtils {
      * @param text
      * @return
      */
-    public static String getSegmentedCharacters(String text) {
-        String res = "";
+    public static ArrayList<String> getSegmentedCharacters(String text) {
+        ArrayList<String> res = new ArrayList<String>();
         for (int i = 0; i < text.length(); ++i) {
             char c = text.charAt(i);
             if (c == ' ') continue;
@@ -171,7 +173,7 @@ public class IOUtils {
                 while (pos < text.length() && pos - i <= 8) {
                     if (text.charAt(pos) == ']') {
                         emotion = true;
-                        res += text.subSequence(i, pos + 1) + " ";
+                        res.add(text.subSequence(i, pos + 1).toString());
                         i = pos;
                         break;
                     }
@@ -183,7 +185,7 @@ public class IOUtils {
             if (isEnglishLetter(c)) {
                 int pos = i + 1;
                 while (pos < text.length() && isEnglishLetter(text.charAt(pos))) ++pos;
-                res += text.subSequence(i, pos) + " ";
+                res.add(text.subSequence(i, pos).toString());
                 i = pos - 1;
                 continue;
             }
@@ -191,13 +193,13 @@ public class IOUtils {
             if (isNumber(c)) {
                 int pos = i + 1;
                 while (pos < text.length() && isNumber(text.charAt(pos))) ++pos;
-                res += text.subSequence(i, pos) + " ";
+                res.add("*NUMBER*");
                 i = pos - 1;
                 continue;
             }
-            res += c + " ";
+//            res.add(c);
         }
-        return res.trim();
+        return res;
     }
     
     private static boolean isEnglishLetter(char c) {
