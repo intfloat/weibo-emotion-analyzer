@@ -120,8 +120,8 @@ if __name__ == '__main__':
             for idx, p in tmp:
                 cur.append(idx)
             y_pred.append(cur)            
-        print 'Average precision with none:', evaluate(y_test, deepcopy(y_pred), cnt_none = True)
-        print 'Average precision without none:', evaluate(y_test, deepcopy(y_pred), cnt_none = False)
+        print 'Average precision without none:', evaluate(deepcopy(y_test), deepcopy(y_pred), cnt_none = False)
+        print 'Average precision with none:', evaluate(deepcopy(y_test), deepcopy(y_pred), cnt_none = True)
 
     print 'Done.'
     stdout.flush()

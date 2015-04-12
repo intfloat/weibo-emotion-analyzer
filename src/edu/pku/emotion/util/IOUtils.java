@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import edu.pku.emotion.feat.LabelMap;
+import edu.pku.instance.Category;
 import edu.pku.instance.Sentence;
 import edu.pku.instance.Weibo;
 
@@ -119,17 +121,10 @@ public class IOUtils {
      * @param out
      * @throws Exception
      */
-    public static void dumpAllCharacters(File out) throws Exception {
+    public static void dumpAllCharacters(ArrayList<Weibo> data, File out) throws Exception {
         if (conf == null) loadConf();
-        FileWriter writer = new FileWriter(out);
-        ArrayList<Weibo> data = IOUtils.loadClassTrainData();        
-        dumpAux(writer, data);
-        data = IOUtils.loadClassTestData();
-        dumpAux(writer, data);
-        data = IOUtils.loadExpressionTrainData();
-        dumpAux(writer, data);
-        data = IOUtils.loadExpressionTestData();
-        dumpAux(writer, data);
+        FileWriter writer = new FileWriter(out);             
+        dumpAux(writer, data);        
         writer.flush();
         return;
     }
@@ -145,6 +140,12 @@ public class IOUtils {
             for (Sentence sent : weibo.getSentences()) {
                 String text = sent.getText();
                 if (text.length() == 0) continue;
+                writer.write(LabelMap.getIndex(Category.getEmotionString(sent.getEmotionType1())) + " ");
+                for (String s : getSegmentedCharacters(text)) writer.write(s + " ");
+                writer.write("\n");
+                
+//              dump an independent record for second label
+                writer.write(LabelMap.getIndex(Category.getEmotionString(sent.getEmotionType2())) + " ");
                 for (String s : getSegmentedCharacters(text)) writer.write(s + " ");
                 writer.write("\n");
             }
@@ -193,7 +194,7 @@ public class IOUtils {
                 i = pos - 1;
                 continue;
             }
-//            res.add(c);
+            res.add(String.valueOf(c));
         }
         return res;
     }
