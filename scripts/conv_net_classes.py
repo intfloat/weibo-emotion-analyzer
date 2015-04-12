@@ -95,6 +95,8 @@ class MLPDropout(object):
 
         # Set up all the hidden layers
         self.weight_matrix_sizes = zip(layer_sizes, layer_sizes[1:])
+        print 'layer_sizes:', layer_sizes
+        print 'weight matrix:', self.weight_matrix_sizes
         self.layers = []
         self.dropout_layers = []
         self.activations = activations
@@ -103,29 +105,29 @@ class MLPDropout(object):
         # dropout the input
         next_dropout_layer_input = _dropout_from_layer(rng, input, p=dropout_rates[0])
         layer_counter = 0
-        for n_in, n_out in self.weight_matrix_sizes[:-1]:
-            next_dropout_layer = DropoutHiddenLayer(rng=rng,
-                    input=next_dropout_layer_input,
-                    activation=activations[layer_counter],
-                    n_in=n_in, n_out=n_out, use_bias=use_bias,
-                    dropout_rate=dropout_rates[layer_counter])
-            self.dropout_layers.append(next_dropout_layer)
-            next_dropout_layer_input = next_dropout_layer.output
+        # for n_in, n_out in self.weight_matrix_sizes[:-1]:        
+        #     next_dropout_layer = DropoutHiddenLayer(rng=rng,
+        #             input=next_dropout_layer_input,
+        #             activation=activations[layer_counter],
+        #             n_in=n_in, n_out=n_out, use_bias=use_bias,
+        #             dropout_rate=dropout_rates[layer_counter])
+        #     self.dropout_layers.append(next_dropout_layer)
+        #     next_dropout_layer_input = next_dropout_layer.output
 
-            # Reuse the parameters from the dropout layer here, in a different
-            # path through the graph.
-            next_layer = HiddenLayer(rng=rng,
-                    input=next_layer_input,
-                    activation=activations[layer_counter],
-                    # scale the weight matrix W with (1-p)
-                    W=next_dropout_layer.W * (1 - dropout_rates[layer_counter]),
-                    b=next_dropout_layer.b,
-                    n_in=n_in, n_out=n_out,
-                    use_bias=use_bias)
-            self.layers.append(next_layer)
-            next_layer_input = next_layer.output
-            #first_layer = False
-            layer_counter += 1
+        #     # Reuse the parameters from the dropout layer here, in a different
+        #     # path through the graph.
+        #     next_layer = HiddenLayer(rng=rng,
+        #             input=next_layer_input,
+        #             activation=activations[layer_counter],
+        #             # scale the weight matrix W with (1-p)
+        #             W=next_dropout_layer.W * (1 - dropout_rates[layer_counter]),
+        #             b=next_dropout_layer.b,
+        #             n_in=n_in, n_out=n_out,
+        #             use_bias=use_bias)
+        #     self.layers.append(next_layer)
+        #     next_layer_input = next_layer.output
+        #     #first_layer = False
+        #     layer_counter += 1
         
         # Set up the output layer
         n_in, n_out = self.weight_matrix_sizes[-1]
@@ -135,13 +137,13 @@ class MLPDropout(object):
         self.dropout_layers.append(dropout_output_layer)
 
         # Again, reuse paramters in the dropout output.
-        output_layer = LogisticRegression(
+        self.output_layer = LogisticRegression(
             input=next_layer_input,
             # scale the weight matrix W with (1-p)
             W=dropout_output_layer.W * (1 - dropout_rates[-1]),
             b=dropout_output_layer.b,
-            n_in=n_in, n_out=n_out)
-        self.layers.append(output_layer)
+            n_in=n_in, n_out=n_out)        
+        self.layers.append(self.output_layer)        
 
         # Use the negative log likelihood of the logistic regression layer as
         # the objective.

@@ -37,7 +37,7 @@ def Iden(x):
        
 def train_conv_net(datasets,
                    U,
-                   img_w = 50, 
+                   img_w = 300, 
                    filter_hs = [3,4,5],
                    hidden_units = [100,2], 
                    dropout_rate = [0.5],
@@ -93,7 +93,7 @@ def train_conv_net(datasets,
         conv_layers.append(conv_layer)
         layer1_inputs.append(layer1_input)
     layer1_input = T.concatenate(layer1_inputs,1)
-    hidden_units[0] = feature_maps*len(filter_hs)    
+    hidden_units[0] = feature_maps * len(filter_hs)
     classifier = MLPDropout(rng, input=layer1_input, layer_sizes=hidden_units, activations=activations, dropout_rates=dropout_rate)
     
     #define parameters of the model and update functions using adadelta
@@ -121,8 +121,9 @@ def train_conv_net(datasets,
     n_batches = new_data.shape[0]/batch_size
     n_train_batches = int(np.round(n_batches*0.9))
     #divide train set into train/val sets 
-    test_set_x = datasets[1][:,:img_h] 
+    test_set_x = np.asarray(datasets[1][:,:img_h], "int32")
     test_set_y = np.asarray(datasets[1][:,-1],"int32")
+    test_x_shared, test_y_shared = shared_dataset((datasets[1][:, :img_h], datasets[1][:, -1]))
     train_set = new_data[:n_train_batches*batch_size,:]
     val_set = new_data[n_train_batches*batch_size:,:]     
     train_set_x, train_set_y = shared_dataset((train_set[:,:img_h],train_set[:,-1]))
@@ -143,10 +144,10 @@ def train_conv_net(datasets,
             x: train_set_x[index*batch_size:(index+1)*batch_size],
             y: train_set_y[index*batch_size:(index+1)*batch_size]})
 
-    # calculate probability distibutions on test data
-    # ndata = T.fvector('ndata')
-    # prob_test_data = theano.function([index], classifier.predict_p(ndata),
-    #                 givens = {ndata: test_set_x[index]})
+    # calculate probability distibutions on test data    
+    f = theano.function([index], classifier.output_layer.p_y_given_x, 
+                        givens = {x: test_x_shared[index * batch_size: (index + 1) * batch_size]})
+    n_test_batches = datasets[1].shape[0] / batch_size
 
     test_pred_layers = []
     test_size = test_set_x.shape[0]
@@ -184,9 +185,12 @@ def train_conv_net(datasets,
         if val_perf >= best_val_perf:
             best_val_perf = val_perf
             # TODO: need to test whether this code actually works...
-            prob_val = [classifier.predict_p(test_set_x[i]) for i in xrange(len(test_set_y))]
-            print 'probability:', prob_val[0]
-            y_pred = []
+            tmp = [f(i) for i in xrange(n_test_batches)]
+            prob_val = []
+            for pb in tmp:                
+                for e in pb:
+                    prob_val.append(e)            
+            y_pred = []            
             assert(len(prob_val) == len(test_set_y))
             # ignore duplicate values
             prob_val = [prob_val[i] for i in xrange(len(prob_val)) if i % 2 == 0]
@@ -198,8 +202,8 @@ def train_conv_net(datasets,
                 for idx, p in tmp:
                     cur.append(idx)
                 y_pred.append(cur)
-            print 'Average precision without none:', evaluate(deepcopy(y_test), deepcopy(y_pred), cnt_none = False)
-            print 'Average precision with none:', evaluate(deepcopy(y_test), deepcopy(y_pred), cnt_none = True)
+            print 'Average precision without none:', evaluate(deepcopy(test_set_y), deepcopy(y_pred), cnt_none = False)
+            print 'Average precision with none:', evaluate(deepcopy(test_set_y), deepcopy(y_pred), cnt_none = True)
             # test_loss = test_model_all(test_set_x,test_set_y)
             # test_perf = 1- test_loss
     return
@@ -272,7 +276,7 @@ def safe_update(dict_to, dict_from):
         dict_to[key] = val
     return dict_to
     
-def get_idx_from_sent(sent, word_idx_map, max_l=51, k=50, filter_h=5):
+def get_idx_from_sent(sent, word_idx_map, max_l=51, k=300, filter_h=5):
     """
     Transforms sentence into a list of indices. Pad with zeroes.
     """
@@ -287,13 +291,13 @@ def get_idx_from_sent(sent, word_idx_map, max_l=51, k=50, filter_h=5):
 
     # A temporary solution to solve np exception,
     # TODO: need to figure out a better solution for variable length problem
-    if len(x) > max_l + 2 * pad:
+    if len(x) > max_l + 2 * pad:        
         x = x[:max_l + 2 * pad]
     while len(x) < max_l+2*pad:
         x.append(0)
     return x
 
-def make_idx_data_cv(revs, word_idx_map, cv, max_l=51, k=50, filter_h=5):
+def make_idx_data_cv(revs, word_idx_map, cv, max_l=51, k=300, filter_h=5):
     """
     Transforms sentences into a 2-d matrix.
     """
@@ -342,7 +346,7 @@ if __name__=="__main__":
         U = W
     
     # NOTICE: we set cv = 1, so 'real test data' will always be validation dataset
-    datasets = make_idx_data_cv(revs, word_idx_map, 1, max_l = 56, k = 50, filter_h = 5)
+    datasets = make_idx_data_cv(revs, word_idx_map, 1, max_l = 56, k = 300, filter_h = 5)
     train_conv_net(datasets,
                       U,
                       lr_decay = 0.95,

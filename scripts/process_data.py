@@ -29,7 +29,7 @@ def build_data_cv(data_folder):
                 revs.append(datum)    
     return revs, vocab
     
-def get_W(word_vecs, k = 50):
+def get_W(word_vecs, k = 300):
     """
     Get word matrix. W[i] is the vector for word indexed by i
     """
@@ -68,7 +68,7 @@ def load_bin_vec(fname, vocab):
                 f.read(binary_len)
     return word_vecs
 
-def add_unknown_words(word_vecs, vocab, min_df=1, k=50):
+def add_unknown_words(word_vecs, vocab, min_df=1, k=300):
     """
     For words that occur in at least min_df documents, create a separate word vector.    
     0.25 is chosen so the unknown vectors have (approximately) same variance as pre-trained ones
@@ -101,7 +101,7 @@ if __name__=="__main__":
     print "word2vec loaded!"
     print "num words already in word2vec: " + str(len(w2v))
     add_unknown_words(w2v, vocab)
-    W, word_idx_map = get_W(w2v)
+    W, word_idx_map = get_W(w2v)    
     rand_vecs = {}
     add_unknown_words(rand_vecs, vocab)
     W2, _ = get_W(rand_vecs)
