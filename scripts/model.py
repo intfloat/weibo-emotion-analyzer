@@ -25,37 +25,44 @@ def load_data(path):
     X, Y = [e[0] for e in data], [e[1] for e in data]
     return X, Y
 
+def average_precision(ranking, reference):
+    """
+    Compute average precision for ranking problem
+    """
+    assert(len(ranking) == len(reference))
+    val = 0.0
+    for label in reference:        
+        if label in ranking:
+            pos = ranking.index(label)
+            cnt = len([1 for e in ranking[:pos + 1] if e in reference])
+            val += 1.0 * cnt / (pos + 1)
+    return val / len(reference)
+
 def evaluate(y_gold, y_pred, cnt_none = True):
     '''
     Only works for Average Precision(AP) ranking score evaluation,
     in y_gold & y_pred, consecutive 2 labels should belong to the same instance.
     '''
-    assert(len(y_gold) % 2 == 0)    
-    y_gold = [(y_gold[i], y_gold[i + 1]) for i in range(len(y_gold)) if i % 2 == 0]
+    assert(len(y_gold) % 2 == 0)
+    y_gold = [[y_gold[i], y_gold[i + 1]] for i in range(len(y_gold)) if i % 2 == 0]
     if not cnt_none:  # delete None label in prediction
         for i in xrange(len(y_pred)):
             y_pred[i].remove(0)
-    print len(y_gold), len(y_pred)
+        for i in xrange(len(y_gold)):
+            while 0 in y_gold[i]: y_gold[i].remove(0)    
     assert(len(y_gold) == len(y_pred))
 
     ap = []
-    for tp, pred in zip(y_gold, y_pred):
-        val, total = 0.0, 0
-        for i in xrange(2):
-            if tp[i] == 0 and cnt_none == False: continue
-            total += 1
-            pos = pred.index(tp[i])   # only consider top 2 predictions
-            if pos >= 2: continue
-            cnt = len([1 for e in pred[:pos + 1] if e in tp])
-            val += 1.0 * cnt / (pos + 1)
-        if total > 0:
-            ap.append(val / total)
+    for gold, pred in zip(y_gold, y_pred):
+        val, pred = 0.0, pred[:len(gold)]
+        if len(gold) > 0:
+            ap.append(average_precision(pred, gold))
     
     precision = sum(ap) / len(ap)
-    return precision    
+    return precision
 
 classifiers = {'svm' : svm.SVC(kernel = 'linear', probability = True), 
-               'rf' : RF(n_estimators = 50, n_jobs = 5), 
+               'rf' : RF(n_estimators = 200, n_jobs = 5), 
                'gbdt' : GBDT()}
 
 if __name__ == '__main__':
