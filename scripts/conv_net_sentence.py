@@ -17,6 +17,8 @@ import theano.tensor as T
 import re
 import warnings
 import sys
+from copy import deepcopy
+from model import *
 warnings.filterwarnings("ignore")   
 
 #different non-linearities
@@ -139,7 +141,13 @@ def train_conv_net(datasets,
     train_model = theano.function([index], cost, updates=grad_updates,
           givens={
             x: train_set_x[index*batch_size:(index+1)*batch_size],
-            y: train_set_y[index*batch_size:(index+1)*batch_size]})     
+            y: train_set_y[index*batch_size:(index+1)*batch_size]})
+
+    # calculate probability distibutions on test data
+    # ndata = T.fvector('ndata')
+    # prob_test_data = theano.function([index], classifier.predict_p(ndata),
+    #                 givens = {ndata: test_set_x[index]})
+
     test_pred_layers = []
     test_size = test_set_x.shape[0]
     test_layer0_input = Words[T.cast(x.flatten(),dtype="int32")].reshape((test_size,1,img_h,Words.shape[1]))
@@ -166,18 +174,35 @@ def train_conv_net(datasets,
                 set_zero(zero_vec)
         else:
             for minibatch_index in xrange(n_train_batches):
-                cost_epoch = train_model(minibatch_index)  
+                cost_epoch = train_model(minibatch_index)
                 set_zero(zero_vec)
         train_losses = [test_model(i) for i in xrange(n_train_batches)]
         train_perf = 1 - np.mean(train_losses)
         val_losses = [val_model(i) for i in xrange(n_val_batches)]
-        val_perf = 1- np.mean(val_losses)                        
+        val_perf = 1- np.mean(val_losses)
         print('epoch %i, train perf %f %%, val perf %f' % (epoch, train_perf * 100., val_perf*100.))
         if val_perf >= best_val_perf:
             best_val_perf = val_perf
-            test_loss = test_model_all(test_set_x,test_set_y)        
-            test_perf = 1- test_loss         
-    return test_perf
+            # TODO: need to test whether this code actually works...
+            prob_val = [classifier.predict_p(test_set_x[i]) for i in xrange(len(test_set_y))]
+            print 'probability:', prob_val[0]
+            y_pred = []
+            assert(len(prob_val) == len(test_set_y))
+            # ignore duplicate values
+            prob_val = [prob_val[i] for i in xrange(len(prob_val)) if i % 2 == 0]
+            for prob in prob_val:
+                tmp = [(i, prob[i]) for i in xrange(len(prob))]
+                # sort in probability descending order
+                tmp.sort(key = lambda (idx, p): p, reverse = True)
+                cur = []
+                for idx, p in tmp:
+                    cur.append(idx)
+                y_pred.append(cur)
+            print 'Average precision without none:', evaluate(deepcopy(y_test), deepcopy(y_pred), cnt_none = False)
+            print 'Average precision with none:', evaluate(deepcopy(y_test), deepcopy(y_pred), cnt_none = True)
+            # test_loss = test_model_all(test_set_x,test_set_y)
+            # test_perf = 1- test_loss
+    return
 
 def shared_dataset(data_xy, borrow=True):
         """ Function that loads the dataset into shared variables
@@ -259,6 +284,11 @@ def get_idx_from_sent(sent, word_idx_map, max_l=51, k=50, filter_h=5):
     for word in words:
         if word in word_idx_map:
             x.append(word_idx_map[word])
+
+    # A temporary solution to solve np exception,
+    # TODO: need to figure out a better solution for variable length problem
+    if len(x) > max_l + 2 * pad:
+        x = x[:max_l + 2 * pad]
     while len(x) < max_l+2*pad:
         x.append(0)
     return x
@@ -271,15 +301,19 @@ def make_idx_data_cv(revs, word_idx_map, cv, max_l=51, k=50, filter_h=5):
     for rev in revs:
         sent = get_idx_from_sent(rev["text"], word_idx_map, max_l, k, filter_h)   
         sent.append(rev["y"])
-        if rev["split"]==cv:            
-            test.append(sent)        
-        else:  
-            train.append(sent)   
-    train = np.array(train,dtype="int")
-    test = np.array(test,dtype="int")
-    return [train, test]  
+        if rev["split"] == cv:           
+            test.append(sent)
+        else:
+            train.append(sent)
+    # print 'train:', train[0]
+    train = np.array(train, dtype="int")
+    test = np.array(test, dtype="int")
+    return [train, test]
    
 if __name__=="__main__":
+    """
+    command: python conv_net_sentence.py static word2vec 8 / 2(for binary classification, use 2 as argument)
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('static', help = 'choose nonstatic or static')
     parser.add_argument('rand', help = 'choose rand or word2vec')
@@ -309,16 +343,16 @@ if __name__=="__main__":
     
     # NOTICE: we set cv = 1, so 'real test data' will always be validation dataset
     datasets = make_idx_data_cv(revs, word_idx_map, 1, max_l = 56, k = 50, filter_h = 5)
-    perf = train_conv_net(datasets,
-                          U,
-                          lr_decay = 0.95,
-                          filter_hs = [3,4,5],
-                          conv_non_linear = "relu",
-                          hidden_units = [100, numclass],  # this parameter defines number of output units
-                          shuffle_batch = True, 
-                          n_epochs = 25, 
-                          sqr_norm_lim = 9,
-                          non_static = non_static,
-                          batch_size = 50,
-                          dropout_rate = [0.5])
+    train_conv_net(datasets,
+                      U,
+                      lr_decay = 0.95,
+                      filter_hs = [3,4,5],
+                      conv_non_linear = "relu",
+                      hidden_units = [100, numclass],  # this parameter defines number of output units
+                      shuffle_batch = True, 
+                      n_epochs = 25, 
+                      sqr_norm_lim = 9,
+                      non_static = non_static,
+                      batch_size = 50,
+                      dropout_rate = [0.5])
     print 'Done.'        

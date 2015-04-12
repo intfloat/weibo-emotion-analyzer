@@ -6,7 +6,7 @@ from collections import defaultdict
 import sys, re
 import pandas as pd
 
-def build_data_cv(data_folder, cv=10, clean_string=True):
+def build_data_cv(data_folder):
     """
     Loads data
     """
@@ -46,7 +46,7 @@ def get_W(word_vecs, k = 50):
 
 def load_bin_vec(fname, vocab):
     """
-    Loads 300x1 word vecs from Google (Mikolov) word2vec
+    Loads 50x1 word vecs
     """
     word_vecs = {}
     with open(fname, "rb") as f:
@@ -68,7 +68,7 @@ def load_bin_vec(fname, vocab):
                 f.read(binary_len)
     return word_vecs
 
-def add_unknown_words(word_vecs, vocab, min_df=1, k=300):
+def add_unknown_words(word_vecs, vocab, min_df=1, k=50):
     """
     For words that occur in at least min_df documents, create a separate word vector.    
     0.25 is chosen so the unknown vectors have (approximately) same variance as pre-trained ones
@@ -78,6 +78,9 @@ def add_unknown_words(word_vecs, vocab, min_df=1, k=300):
             word_vecs[word] = np.random.uniform(-0.25,0.25,k)  
 
 if __name__=="__main__":
+    """
+    command: python process_data.py small_train.txt small_test.txt vectors.bin
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('train', help = 'training data file')
     parser.add_argument('test', help = 'test data file')
@@ -87,7 +90,7 @@ if __name__=="__main__":
     w2v_file = options.w2v
     data_folder = [options.train, options.test]    
     print "loading data...",
-    revs, vocab = build_data_cv(data_folder, cv=10, clean_string=True)
+    revs, vocab = build_data_cv(data_folder)
     max_l = np.max(pd.DataFrame(revs)["num_words"])
     print "data loaded!"
     print "number of sentences: " + str(len(revs))
