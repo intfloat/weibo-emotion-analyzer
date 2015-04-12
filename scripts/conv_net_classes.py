@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Sample code for
 Convolutional Neural Networks for Sentence Classification

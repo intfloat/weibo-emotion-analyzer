@@ -8,47 +8,28 @@ import pandas as pd
 
 def build_data_cv(data_folder, cv=10, clean_string=True):
     """
-    Loads data and split into 10 folds.
+    Loads data
     """
-    revs = []
-    pos_file = data_folder[0]
-    neg_file = data_folder[1]
+    revs = []    
     vocab = defaultdict(float)
-    with open(pos_file, "rb") as f:
-        for line in f:       
-            rev = []
-            rev.append(line.strip())
-            if clean_string:
-                orig_rev = clean_str(" ".join(rev))
-            else:
-                orig_rev = " ".join(rev).lower()
-            words = set(orig_rev.split())
-            for word in words:
-                vocab[word] += 1
-            datum  = {"y":1, 
-                      "text": orig_rev,                             
-                      "num_words": len(orig_rev.split()),
-                      "split": np.random.randint(0,cv)}
-            revs.append(datum)
-    with open(neg_file, "rb") as f:
-        for line in f:       
-            rev = []
-            rev.append(line.strip())
-            if clean_string:
-                orig_rev = clean_str(" ".join(rev))
-            else:
-                orig_rev = " ".join(rev).lower()
-            words = set(orig_rev.split())
-            for word in words:
-                vocab[word] += 1
-            datum  = {"y":0, 
-                      "text": orig_rev,                             
-                      "num_words": len(orig_rev.split()),
-                      "split": np.random.randint(0,cv)}
-            revs.append(datum)
+    # idx = 0 corresponds to training data,
+    # idx = 1 corresponds to test data
+    for idx, path in enumerate(data_folder):
+        with open(path, 'rb') as f:
+            for line in f:            
+                rev = line.strip()
+                words = rev.split() # first field is label, then follow original text
+                words, label = words[1:], int(words[0])
+                for word in words:
+                    vocab[word] += 1
+                datum  = {"y" : label,
+                          "text" : rev,
+                          "num_words" : len(words),
+                          "split" : idx}
+                revs.append(datum)    
     return revs, vocab
     
-def get_W(word_vecs, k=300):
+def get_W(word_vecs, k = 50):
     """
     Get word matrix. W[i] is the vector for word indexed by i
     """

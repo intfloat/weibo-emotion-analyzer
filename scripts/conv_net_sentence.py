@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Sample code for
 Convolutional Neural Networks for Sentence Classification
@@ -34,18 +35,18 @@ def Iden(x):
        
 def train_conv_net(datasets,
                    U,
-                   img_w=300, 
-                   filter_hs=[3,4,5],
-                   hidden_units=[100,2], 
-                   dropout_rate=[0.5],
-                   shuffle_batch=True,
-                   n_epochs=25, 
-                   batch_size=50, 
+                   img_w = 50, 
+                   filter_hs = [3,4,5],
+                   hidden_units = [100,2], 
+                   dropout_rate = [0.5],
+                   shuffle_batch = True,
+                   n_epochs = 25, 
+                   batch_size = 50, 
                    lr_decay = 0.95,
-                   conv_non_linear="relu",
-                   activations=[Iden],
-                   sqr_norm_lim=9,
-                   non_static=True):
+                   conv_non_linear = "relu",
+                   activations = [Iden],
+                   sqr_norm_lim = 9,
+                   non_static = True):
     """
     Train a simple conv net
     img_h = sentence length (padded where necessary)
@@ -246,7 +247,7 @@ def safe_update(dict_to, dict_from):
         dict_to[key] = val
     return dict_to
     
-def get_idx_from_sent(sent, word_idx_map, max_l=51, k=300, filter_h=5):
+def get_idx_from_sent(sent, word_idx_map, max_l=51, k=50, filter_h=5):
     """
     Transforms sentence into a list of indices. Pad with zeroes.
     """
@@ -262,7 +263,7 @@ def get_idx_from_sent(sent, word_idx_map, max_l=51, k=300, filter_h=5):
         x.append(0)
     return x
 
-def make_idx_data_cv(revs, word_idx_map, cv, max_l=51, k=300, filter_h=5):
+def make_idx_data_cv(revs, word_idx_map, cv, max_l=51, k=50, filter_h=5):
     """
     Transforms sentences into a 2-d matrix.
     """
@@ -276,45 +277,48 @@ def make_idx_data_cv(revs, word_idx_map, cv, max_l=51, k=300, filter_h=5):
             train.append(sent)   
     train = np.array(train,dtype="int")
     test = np.array(test,dtype="int")
-    return [train, test]     
-  
+    return [train, test]  
    
 if __name__=="__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('static', help = 'choose nonstatic or static')
+    parser.add_argument('rand', help = 'choose rand or word2vec')
+    parser.add_argument('numclass', help = 'set number of classes')
+    options = parser.parse_args()
+    print options
     print "loading data...",
     x = cPickle.load(open("mr.p","rb"))
     revs, W, W2, word_idx_map, vocab = x[0], x[1], x[2], x[3], x[4]
     print "data loaded!"
-    mode= sys.argv[1]
-    word_vectors = sys.argv[2]    
-    if mode=="-nonstatic":
+    mode = options.static
+    word_vectors = options.rand
+    numclass = int(options.numclass)
+    if mode == "nonstatic":
         print "model architecture: CNN-non-static"
-        non_static=True
-    elif mode=="-static":
+        non_static = True
+    elif mode == "static":
         print "model architecture: CNN-static"
-        non_static=False
+        non_static = False
     execfile("conv_net_classes.py")    
-    if word_vectors=="-rand":
+    if word_vectors == "rand":
         print "using: random vectors"
         U = W2
-    elif word_vectors=="-word2vec":
+    elif word_vectors == "word2vec":
         print "using: word2vec vectors"
         U = W
-    results = []
-    r = range(0,10)    
-    for i in r:
-        datasets = make_idx_data_cv(revs, word_idx_map, i, max_l=56,k=300, filter_h=5)
-        perf = train_conv_net(datasets,
-                              U,
-                              lr_decay=0.95,
-                              filter_hs=[3,4,5],
-                              conv_non_linear="relu",
-                              hidden_units=[100,2], 
-                              shuffle_batch=True, 
-                              n_epochs=25, 
-                              sqr_norm_lim=9,
-                              non_static=non_static,
-                              batch_size=50,
-                              dropout_rate=[0.5])
-        print "cv: " + str(i) + ", perf: " + str(perf)
-        results.append(perf)  
-    print str(np.mean(results))
+    
+    # NOTICE: we set cv = 1, so 'real test data' will always be validation dataset
+    datasets = make_idx_data_cv(revs, word_idx_map, 1, max_l = 56, k = 50, filter_h = 5)
+    perf = train_conv_net(datasets,
+                          U,
+                          lr_decay = 0.95,
+                          filter_hs = [3,4,5],
+                          conv_non_linear = "relu",
+                          hidden_units = [100, numclass],  # this parameter defines number of output units
+                          shuffle_batch = True, 
+                          n_epochs = 25, 
+                          sqr_norm_lim = 9,
+                          non_static = non_static,
+                          batch_size = 50,
+                          dropout_rate = [0.5])
+    print 'Done.'        
