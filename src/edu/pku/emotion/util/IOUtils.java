@@ -194,7 +194,7 @@ public class IOUtils {
                 i = pos - 1;
                 continue;
             }
-            res.add(String.valueOf(c));
+//            res.add(String.valueOf(c));
         }
         return res;
     }
