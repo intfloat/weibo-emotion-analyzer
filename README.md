@@ -16,6 +16,24 @@
 
 再尝试用CNN + Hierarchical Softmax改进，后面这个相对复杂，效果不一定好，需要不断尝试。
 
+# 实验结果
+
+## 观点分类
+
+|     | precision | recall | F-measure |
+|-----|-----------|--------|-----------|
+| 0   | 0.90      | 0.81   | 0.86      |
+| 1   | 0.71      | 0.84   | 0.77      |
+| avg | 0.83      | 0.82   | 0.83      |
+
+## 情绪分类average precision
+
+|              | weibo-level | sentence-level |
+|--------------|-------------|----------------|
+| with None    | 0.91        | 0.955          |
+| without None | 0.786       | 0.797          |
+
+
 # 依赖的开源项目
 
 [XGBoost](https://github.com/dmlc/xgboost)
