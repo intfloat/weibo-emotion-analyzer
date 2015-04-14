@@ -4,7 +4,12 @@
 
 # how to run
 
-将项目import到eclipse中，选择Main.java -> run as -> java application， 或者用命令行也行    
+1.将项目import到eclipse中，选择Main.java -> run as -> java application， 或者用命令行也行，该步会生成特征文件
+
+2.切换到scripts目录，运行以下命令：
+    ./gendata.sh && run.sh 1>log.txt 2>&1 &
+
+在scripts/log.txt中可以复现本实验的全部结果。
 
 # 如何增加特征
 
